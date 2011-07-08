@@ -1,10 +1,10 @@
 CLIP_STRINGIFY(
-kernel void lland2(global float *data1,
-                   global float *data2,
+kernel void lland2(global imval* data1,
+                   global imval* data2,
                    float degree,
                    int adapt,
                    float scale,
-                   global float *output) {
+                   global imval* output) {
   int indx = get_global_index();
   
   float in1 = load_imval(indx, data1);
@@ -23,12 +23,12 @@ kernel void lland2(global float *data1,
   store_imval(scale*result, indx, output);
 }
 
-kernel void llor2(global float *data1,
-                  global float *data2,
+kernel void llor2(global imval* data1,
+                  global imval* data2,
                   float degree,
                   int adapt,
                   float scale,
-                  global float *output) {
+                  global imval* output) {
   int indx = get_global_index();
   
   float in1 = load_imval(indx, data1);
@@ -47,13 +47,13 @@ kernel void llor2(global float *data1,
   store_imval(scale*result, indx, output);
 }
 
-kernel void lland3(global float *data1,
-                   global float *data2,
-                   global float *data3,
+kernel void lland3(global imval* data1,
+                   global imval* data2,
+                   global imval* data3,
                    float degree,
                    int adapt,
                    float scale,
-                   global float *output) {
+                   global imval* output) {
   int indx = get_global_index();
   
   float in1 = load_imval(indx, data1);
@@ -76,13 +76,13 @@ kernel void lland3(global float *data1,
   store_imval(scale*result, indx, output);
 }
 
-kernel void llor3(global float *data1,
-                  global float *data2,
-                  global float *data3,
+kernel void llor3(global imval* data1,
+                  global imval* data2,
+                  global imval* data3,
                   float degree,
                   int adapt,
                   float scale,
-                  global float *output) {
+                  global imval* output) {
   int indx = get_global_index();
   
   float in1 = load_imval(indx, data1);
@@ -105,14 +105,14 @@ kernel void llor3(global float *data1,
   store_imval(scale*result, indx, output);
 }
 
-kernel void lland4(global float *data1,
-                   global float *data2,
-                   global float *data3,
-                   global float *data4,
+kernel void lland4(global imval* data1,
+                   global imval* data2,
+                   global imval* data3,
+                   global imval* data4,
                    float degree,
                    int adapt,
                    float scale,
-                   global float *output) {
+                   global imval* output) {
   int indx = get_global_index();
   
   float in1 = load_imval(indx, data1);
@@ -139,14 +139,14 @@ kernel void lland4(global float *data1,
   store_imval(scale*result, indx, output);
 }
 
-kernel void llor4(global float *data1,
-                  global float *data2,
-                  global float *data3,
-                  global float *data4,
+kernel void llor4(global imval* data1,
+                  global imval* data2,
+                  global imval* data3,
+                  global imval* data4,
                   float degree,
                   int adapt,
                   float scale,
-                  global float *output) {
+                  global imval* output) {
   int indx = get_global_index();
   
   float in1 = load_imval(indx, data1);
@@ -173,15 +173,15 @@ kernel void llor4(global float *data1,
   store_imval(scale*result, indx, output);
 }
 
-kernel void lland5(global float *data1,
-                   global float *data2,
-                   global float *data3,
-                   global float *data4,
-                   global float *data5,
+kernel void lland5(global imval* data1,
+                   global imval* data2,
+                   global imval* data3,
+                   global imval* data4,
+                   global imval* data5,
                    float degree,
                    int adapt,
                    float scale,
-                   global float *output) {
+                   global imval* output) {
   int indx = get_global_index();
   
   float in1 = load_imval(indx, data1);
@@ -212,15 +212,15 @@ kernel void lland5(global float *data1,
   store_imval(scale*result, indx, output);
 }
 
-kernel void llor5(global float *data1,
-                  global float *data2,
-                  global float *data3,
-                  global float *data4,
-                  global float *data5,
+kernel void llor5(global imval* data1,
+                  global imval* data2,
+                  global imval* data3,
+                  global imval* data4,
+                  global imval* data5,
                   float degree,
                   int adapt,
                   float scale,
-                  global float *output) {
+                  global imval* output) {
   int indx = get_global_index();
   
   float in1 = load_imval(indx, data1);
@@ -251,16 +251,16 @@ kernel void llor5(global float *data1,
   store_imval(scale*result, indx, output);
 }
 
-kernel void lland6(global float *data1,
-                   global float *data2,
-                   global float *data3,
-                   global float *data4,
-                   global float *data5,
-                   global float *data6,
+kernel void lland6(global imval* data1,
+                   global imval* data2,
+                   global imval* data3,
+                   global imval* data4,
+                   global imval* data5,
+                   global imval* data6,
                    float degree,
                    int adapt,
                    float scale,
-                   global float *output) {
+                   global imval* output) {
   int indx = get_global_index();
   
   float in1 = load_imval(indx, data1);
@@ -295,16 +295,16 @@ kernel void lland6(global float *data1,
   store_imval(scale*result, indx, output);
 }
 
-kernel void llor6(global float *data1,
-                  global float *data2,
-                  global float *data3,
-                  global float *data4,
-                  global float *data5,
-                  global float *data6,
+kernel void llor6(global imval* data1,
+                  global imval* data2,
+                  global imval* data3,
+                  global imval* data4,
+                  global imval* data5,
+                  global imval* data6,
                   float degree,
                   int adapt,
                   float scale,
-                  global float *output) {
+                  global imval* output) {
   int indx = get_global_index();
   
   float in1 = load_imval(indx, data1);
