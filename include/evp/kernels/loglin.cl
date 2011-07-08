@@ -7,17 +7,20 @@ kernel void lland2(global float *data1,
                    global float *output) {
   int indx = get_global_index();
   
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  
   if (adapt) {
-    float maxval = fmax(data1[indx], data2[indx]);
+    float maxval = fmax(in1, in2);
     degree /= maxval;
   }
   
-  float cp1 = contpart(data1[indx], degree);
-  float cp2 = contpart(data2[indx], degree);
+  float cp1 = contpart(in1, degree);
+  float cp2 = contpart(in2, degree);
   float prod_plus_1 = cp1*cp2 + 1;
-  float result = data1[indx]*(prod_plus_1 - cp1) +
-  data2[indx]*(prod_plus_1 - cp2);
-  output[indx] = scale*result;
+  float result = in1*(prod_plus_1 - cp1) +
+                 in2*(prod_plus_1 - cp2);
+  store_imval(scale*result, indx, output);
 }
 
 kernel void llor2(global float *data1,
@@ -28,17 +31,20 @@ kernel void llor2(global float *data1,
                   global float *output) {
   int indx = get_global_index();
   
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  
   if (adapt) {
-    float maxval = fmax(data1[indx], data2[indx]);
+    float maxval = fmax(in1, in2);
     degree /= maxval;
   }
   
-  float cp1 = contpart(-data1[indx], degree);
-  float cp2 = contpart(-data2[indx], degree);
+  float cp1 = contpart(-in1, degree);
+  float cp2 = contpart(-in2, degree);
   float prod_plus_1 = cp1*cp2 + 1;
-  float result = data1[indx]*(prod_plus_1 - cp1) +
-  data2[indx]*(prod_plus_1 - cp2);
-  output[indx] = scale*result;
+  float result = in1*(prod_plus_1 - cp1) +
+                 in2*(prod_plus_1 - cp2);
+  store_imval(scale*result, indx, output);
 }
 
 kernel void lland3(global float *data1,
@@ -50,20 +56,24 @@ kernel void lland3(global float *data1,
                    global float *output) {
   int indx = get_global_index();
   
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  float in3 = load_imval(indx, data3);
+  
   if (adapt) {
-    float maxval = fmax(data1[indx], data2[indx]);
-    maxval = fmax(maxval, data3[indx]);
+    float maxval = fmax(in1, in2);
+    maxval = fmax(maxval, in3);
     degree /= maxval;
   }
   
-  float cp1 = contpart(data1[indx], degree);
-  float cp2 = contpart(data2[indx], degree);
-  float cp3 = contpart(data3[indx], degree);
+  float cp1 = contpart(in1, degree);
+  float cp2 = contpart(in2, degree);
+  float cp3 = contpart(in3, degree);
   float prod_plus_1 = cp1*cp2*cp3 + 1;
-  float result = data1[indx]*(prod_plus_1 - cp1) +
-  data2[indx]*(prod_plus_1 - cp2) +
-  data3[indx]*(prod_plus_1 - cp3);
-  output[indx] = scale*result;
+  float result = in1*(prod_plus_1 - cp1) +
+                 in2*(prod_plus_1 - cp2) +
+                 in3*(prod_plus_1 - cp3);
+  store_imval(scale*result, indx, output);
 }
 
 kernel void llor3(global float *data1,
@@ -75,20 +85,24 @@ kernel void llor3(global float *data1,
                   global float *output) {
   int indx = get_global_index();
   
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  float in3 = load_imval(indx, data3);
+  
   if (adapt) {
-    float maxval = fmax(data1[indx], data2[indx]);
-    maxval = fmax(maxval, data3[indx]);
+    float maxval = fmax(in1, in2);
+    maxval = fmax(maxval, in3);
     degree /= maxval;
   }
   
-  float cp1 = contpart(-data1[indx], degree);
-  float cp2 = contpart(-data2[indx], degree);
-  float cp3 = contpart(-data3[indx], degree);
+  float cp1 = contpart(-in1, degree);
+  float cp2 = contpart(-in2, degree);
+  float cp3 = contpart(-in3, degree);
   float prod_plus_1 = cp1*cp2*cp3 + 1;
-  float result = data1[indx]*(prod_plus_1 - cp1) +
-  data2[indx]*(prod_plus_1 - cp2) +
-  data3[indx]*(prod_plus_1 - cp3);
-  output[indx] = scale*result;
+  float result = in1*(prod_plus_1 - cp1) +
+                 in2*(prod_plus_1 - cp2) +
+                 in3*(prod_plus_1 - cp3);
+  store_imval(scale*result, indx, output);
 }
 
 kernel void lland4(global float *data1,
@@ -101,23 +115,28 @@ kernel void lland4(global float *data1,
                    global float *output) {
   int indx = get_global_index();
   
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  float in3 = load_imval(indx, data3);
+  float in4 = load_imval(indx, data4);
+  
   if (adapt) {
-    float maxval = fmax(data1[indx], data2[indx]);
-    maxval = fmax(maxval, data3[indx]);
-    maxval = fmax(maxval, data4[indx]);
+    float maxval = fmax(in1, in2);
+    maxval = fmax(maxval, in3);
+    maxval = fmax(maxval, in4);
     degree /= maxval;
   }
   
-  float cp1 = contpart(data1[indx], degree);
-  float cp2 = contpart(data2[indx], degree);
-  float cp3 = contpart(data3[indx], degree);
-  float cp4 = contpart(data4[indx], degree);
+  float cp1 = contpart(in1, degree);
+  float cp2 = contpart(in2, degree);
+  float cp3 = contpart(in3, degree);
+  float cp4 = contpart(in4, degree);
   float prod_plus_1 = cp1*cp2*cp3*cp4 + 1;
-  float result = data1[indx]*(prod_plus_1 - cp1) +
-  data2[indx]*(prod_plus_1 - cp2) +
-  data3[indx]*(prod_plus_1 - cp3) +
-  data4[indx]*(prod_plus_1 - cp4);
-  output[indx] = scale*result;
+  float result = in1*(prod_plus_1 - cp1) +
+                 in2*(prod_plus_1 - cp2) +
+                 in3*(prod_plus_1 - cp3) +
+                 in4*(prod_plus_1 - cp4);
+  store_imval(scale*result, indx, output);
 }
 
 kernel void llor4(global float *data1,
@@ -130,23 +149,28 @@ kernel void llor4(global float *data1,
                   global float *output) {
   int indx = get_global_index();
   
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  float in3 = load_imval(indx, data3);
+  float in4 = load_imval(indx, data4);
+  
   if (adapt) {
-    float maxval = fmax(data1[indx], data2[indx]);
-    maxval = fmax(maxval, data3[indx]);
-    maxval = fmax(maxval, data4[indx]);
+    float maxval = fmax(in1, in2);
+    maxval = fmax(maxval, in3);
+    maxval = fmax(maxval, in4);
     degree /= maxval;
   }
   
-  float cp1 = contpart(-data1[indx], degree);
-  float cp2 = contpart(-data2[indx], degree);
-  float cp3 = contpart(-data3[indx], degree);
-  float cp4 = contpart(-data4[indx], degree);
+  float cp1 = contpart(-in1, degree);
+  float cp2 = contpart(-in2, degree);
+  float cp3 = contpart(-in3, degree);
+  float cp4 = contpart(-in4, degree);
   float prod_plus_1 = cp1*cp2*cp3*cp4 + 1;
-  float result = data1[indx]*(prod_plus_1 - cp1) +
-  data2[indx]*(prod_plus_1 - cp2) +
-  data3[indx]*(prod_plus_1 - cp3) +
-  data4[indx]*(prod_plus_1 - cp4);
-  output[indx] = scale*result;
+  float result = in1*(prod_plus_1 - cp1) +
+                 in2*(prod_plus_1 - cp2) +
+                 in3*(prod_plus_1 - cp3) +
+                 in4*(prod_plus_1 - cp4);
+  store_imval(scale*result, indx, output);
 }
 
 kernel void lland5(global float *data1,
@@ -160,26 +184,32 @@ kernel void lland5(global float *data1,
                    global float *output) {
   int indx = get_global_index();
   
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  float in3 = load_imval(indx, data3);
+  float in4 = load_imval(indx, data4);
+  float in5 = load_imval(indx, data5);
+  
   if (adapt) {
-    float maxval = fmax(data1[indx], data2[indx]);
-    maxval = fmax(maxval, data3[indx]);
-    maxval = fmax(maxval, data4[indx]);
-    maxval = fmax(maxval, data5[indx]);
+    float maxval = fmax(in1, in2);
+    maxval = fmax(maxval, in3);
+    maxval = fmax(maxval, in4);
+    maxval = fmax(maxval, in5);
     degree /= maxval;
   }
   
-  float cp1 = contpart(data1[indx], degree);
-  float cp2 = contpart(data2[indx], degree);
-  float cp3 = contpart(data3[indx], degree);
-  float cp4 = contpart(data4[indx], degree);
-  float cp5 = contpart(data5[indx], degree);
+  float cp1 = contpart(in1, degree);
+  float cp2 = contpart(in2, degree);
+  float cp3 = contpart(in3, degree);
+  float cp4 = contpart(in4, degree);
+  float cp5 = contpart(in5, degree);
   float prod_plus_1 = cp1*cp2*cp3*cp4*cp5 + 1;
-  float result = data1[indx]*(prod_plus_1 - cp1) +
-  data2[indx]*(prod_plus_1 - cp2) +
-  data3[indx]*(prod_plus_1 - cp3) +
-  data4[indx]*(prod_plus_1 - cp4) +
-  data5[indx]*(prod_plus_1 - cp5);
-  output[indx] = scale*result;
+  float result = in1*(prod_plus_1 - cp1) +
+                 in2*(prod_plus_1 - cp2) +
+                 in3*(prod_plus_1 - cp3) +
+                 in4*(prod_plus_1 - cp4) +
+                 in5*(prod_plus_1 - cp5);
+  store_imval(scale*result, indx, output);
 }
 
 kernel void llor5(global float *data1,
@@ -193,26 +223,32 @@ kernel void llor5(global float *data1,
                   global float *output) {
   int indx = get_global_index();
   
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  float in3 = load_imval(indx, data3);
+  float in4 = load_imval(indx, data4);
+  float in5 = load_imval(indx, data5);
+  
   if (adapt) {
-    float maxval = fmax(data1[indx], data2[indx]);
-    maxval = fmax(maxval, data3[indx]);
-    maxval = fmax(maxval, data4[indx]);
-    maxval = fmax(maxval, data5[indx]);
+    float maxval = fmax(in1, in2);
+    maxval = fmax(maxval, in3);
+    maxval = fmax(maxval, in4);
+    maxval = fmax(maxval, in5);
     degree /= maxval;
   }
   
-  float cp1 = contpart(-data1[indx], degree);
-  float cp2 = contpart(-data2[indx], degree);
-  float cp3 = contpart(-data3[indx], degree);
-  float cp4 = contpart(-data4[indx], degree);
-  float cp5 = contpart(-data5[indx], degree);
+  float cp1 = contpart(-in1, degree);
+  float cp2 = contpart(-in2, degree);
+  float cp3 = contpart(-in3, degree);
+  float cp4 = contpart(-in4, degree);
+  float cp5 = contpart(-in5, degree);
   float prod_plus_1 = cp1*cp2*cp3*cp4*cp5 + 1;
-  float result = data1[indx]*(prod_plus_1 - cp1) +
-  data2[indx]*(prod_plus_1 - cp2) +
-  data3[indx]*(prod_plus_1 - cp3) +
-  data4[indx]*(prod_plus_1 - cp4) +
-  data5[indx]*(prod_plus_1 - cp5);
-  output[indx] = scale*result;
+  float result = in1*(prod_plus_1 - cp1) +
+                 in2*(prod_plus_1 - cp2) +
+                 in3*(prod_plus_1 - cp3) +
+                 in4*(prod_plus_1 - cp4) +
+                 in5*(prod_plus_1 - cp5);
+  store_imval(scale*result, indx, output);
 }
 
 kernel void lland6(global float *data1,
@@ -227,29 +263,36 @@ kernel void lland6(global float *data1,
                    global float *output) {
   int indx = get_global_index();
   
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  float in3 = load_imval(indx, data3);
+  float in4 = load_imval(indx, data4);
+  float in5 = load_imval(indx, data5);
+  float in6 = load_imval(indx, data6);
+  
   if (adapt) {
-    float maxval = fmax(data1[indx], data2[indx]);
-    maxval = fmax(maxval, data3[indx]);
-    maxval = fmax(maxval, data4[indx]);
-    maxval = fmax(maxval, data5[indx]);
-    maxval = fmax(maxval, data6[indx]);
+    float maxval = fmax(in1, in2);
+    maxval = fmax(maxval, in3);
+    maxval = fmax(maxval, in4);
+    maxval = fmax(maxval, in5);
+    maxval = fmax(maxval, in6);
     degree /= maxval;
   }
   
-  float cp1 = contpart(data1[indx], degree);
-  float cp2 = contpart(data2[indx], degree);
-  float cp3 = contpart(data3[indx], degree);
-  float cp4 = contpart(data4[indx], degree);
-  float cp5 = contpart(data5[indx], degree);
-  float cp6 = contpart(data6[indx], degree);
+  float cp1 = contpart(in1, degree);
+  float cp2 = contpart(in2, degree);
+  float cp3 = contpart(in3, degree);
+  float cp4 = contpart(in4, degree);
+  float cp5 = contpart(in5, degree);
+  float cp6 = contpart(in6, degree);
   float prod_plus_1 = cp1*cp2*cp3*cp4*cp5*cp6 + 1;
-  float result = data1[indx]*(prod_plus_1 - cp1) +
-  data2[indx]*(prod_plus_1 - cp2) +
-  data3[indx]*(prod_plus_1 - cp3) +
-  data4[indx]*(prod_plus_1 - cp4) +
-  data5[indx]*(prod_plus_1 - cp5) +
-  data6[indx]*(prod_plus_1 - cp6);
-  output[indx] = scale*result;
+  float result = in1*(prod_plus_1 - cp1) +
+                 in2*(prod_plus_1 - cp2) +
+                 in3*(prod_plus_1 - cp3) +
+                 in4*(prod_plus_1 - cp4) +
+                 in5*(prod_plus_1 - cp5) +
+                 in6*(prod_plus_1 - cp6);
+  store_imval(scale*result, indx, output);
 }
 
 kernel void llor6(global float *data1,
@@ -264,28 +307,35 @@ kernel void llor6(global float *data1,
                   global float *output) {
   int indx = get_global_index();
   
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  float in3 = load_imval(indx, data3);
+  float in4 = load_imval(indx, data4);
+  float in5 = load_imval(indx, data5);
+  float in6 = load_imval(indx, data6);
+  
   if (adapt) {
-    float maxval = fmax(data1[indx], data2[indx]);
-    maxval = fmax(maxval, data3[indx]);
-    maxval = fmax(maxval, data4[indx]);
-    maxval = fmax(maxval, data5[indx]);
-    maxval = fmax(maxval, data6[indx]);
+    float maxval = fmax(in1, in2);
+    maxval = fmax(maxval, in3);
+    maxval = fmax(maxval, in4);
+    maxval = fmax(maxval, in5);
+    maxval = fmax(maxval, in6);
     degree /= maxval;
   }
   
-  float cp1 = contpart(-data1[indx], degree);
-  float cp2 = contpart(-data2[indx], degree);
-  float cp3 = contpart(-data3[indx], degree);
-  float cp4 = contpart(-data4[indx], degree);
-  float cp5 = contpart(-data5[indx], degree);
-  float cp6 = contpart(-data6[indx], degree);
+  float cp1 = contpart(-in1, degree);
+  float cp2 = contpart(-in2, degree);
+  float cp3 = contpart(-in3, degree);
+  float cp4 = contpart(-in4, degree);
+  float cp5 = contpart(-in5, degree);
+  float cp6 = contpart(-in6, degree);
   float prod_plus_1 = cp1*cp2*cp3*cp4*cp5*cp6 + 1;
-  float result = data1[indx]*(prod_plus_1 - cp1) +
-  data2[indx]*(prod_plus_1 - cp2) +
-  data3[indx]*(prod_plus_1 - cp3) +
-  data4[indx]*(prod_plus_1 - cp4) +
-  data5[indx]*(prod_plus_1 - cp5) +
-  data6[indx]*(prod_plus_1 - cp6);
-  output[indx] = scale*result;
+  float result = in1*(prod_plus_1 - cp1) +
+                 in2*(prod_plus_1 - cp2) +
+                 in3*(prod_plus_1 - cp3) +
+                 in4*(prod_plus_1 - cp4) +
+                 in5*(prod_plus_1 - cp5) +
+                 in6*(prod_plus_1 - cp6);
+  store_imval(scale*result, indx, output);
 }
 )

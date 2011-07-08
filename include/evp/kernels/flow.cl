@@ -1,64 +1,64 @@
 CLIP_STRINGIFY(
-kernel void grad2polar(global float *xs,
-                       global float *ys,
-                       global float *mag,
-                       global float *angle) {
+kernel void grad2polar(global imval* xs,
+                       global imval* ys,
+                       global imval* mag,
+                       global imval* angle) {
 	int indx = get_global_index();
-  float x = xs[indx];
-  float y = ys[indx];
+  float x = load_imval(indx, xs);
+  float y = load_imval(indx, ys);
   angle[indx] = atan2(x, -y);
   mag[indx] = hypot(x, y);
 }
 
-kernel void unitvec(global float *angles,
-                    global float *vs,
-                    global float *us) {
+kernel void unitvec(global imval* angles,
+                    global imval* vs,
+                    global imval* us) {
 	int indx = get_global_index();
-  float angle = angles[indx];
+  float angle = load_imval(indx, angles);
   us[indx] = cos(angle);
   vs[indx] = sin(angle);
 }
 
-kernel void ktkn(global float *us,
-                 global float *vs,
-                 global float *vxs,
-                 global float *vys,
-                 global float *kns,
-                 global float *kts) {
+kernel void ktkn(global imval* us,
+                 global imval* vs,
+                 global imval* vxs,
+                 global imval* vys,
+                 global imval* kns,
+                 global imval* kts) {
   int indx = get_global_index();
-  float u = us[indx];
-  float v = vs[indx];
-  float vx = vxs[indx];
-  float vy = vys[indx];
+  float u = load_imval(indx, us);
+  float v = load_imval(indx, vs);
+  float vx = load_imval(indx, vxs);
+  float vy = load_imval(indx, vys);
   kts[indx] = (v*vy + u*vx)/u;
   kns[indx] = (u*vy - v*vx)/u;
 }
 
-kernel void rescale(global float *input,
+kernel void rescale(global imval* input,
                     float min, float max, float targ_min, float targ_max,
-                    int filter, global float *output) {
+                    int filter, global imval* output) {
   int indx = get_global_index();
-  float inval = input[indx];
+  float inval = load_imval(indx, input);
   float outval = targ_min + (inval - min)/(max - min)*(targ_max - targ_min);
   if (filter) outval *= inval > min && inval < max;
-  output[indx] = outval;
+  store_imval(outval, indx, output);
 }
 
 #define PI 3.14159265358979323846f
 
-kernel void flowdiscr(global float *confs,
-                      global float *thetas,
+kernel void flowdiscr(global imval* confs,
+                      global imval* thetas,
                       float targ_theta, float theta_step, int npis,
-                      global float *kts,
-                      global float *kns,
+                      global imval* kts,
+                      global imval* kns,
                       float targ_kt, float targ_kn, float k_step,
-                      global float *output) {
+                      global imval* output) {
   int indx = get_global_index();
   
-  float conf = confs[indx];
-  float theta = thetas[indx];
-  float kt = kts[indx];
-  float kn = kns[indx];
+  float conf = load_imval(indx, confs);
+  float theta = load_imval(indx, thetas);
+  float kt = load_imval(indx, thetas);
+  float kn = load_imval(indx, kns);
   
   int test = theta < 0.f;
   theta = test ? theta + npis*PI : theta;
@@ -74,6 +74,6 @@ kernel void flowdiscr(global float *confs,
           fabs(kt - targ_kt) < k_step/2 &&
           fabs(kn - targ_kn) < k_step/2);
   
-  output[indx] = test ? conf : 0.f;
+  store_imval(test ? conf : 0.f, indx, output);
 }
 )

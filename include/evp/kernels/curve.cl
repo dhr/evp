@@ -1,31 +1,35 @@
 CLIP_STRINGIFY(
-kernel void stabilize(global float *input1,
-                      global float *slice_sum,
+kernel void stabilize(global imval* input1,
+                      global imval* slice_sum,
                       int n, float stab_amt,
-                      global float *output) {
+                      global imval* output) {
   int indx = get_global_index();
-  float inval = input1[indx];
-  output[indx] = inval + stab_amt*(fabs(inval) - slice_sum[indx]/n);
+  float inval = load_imval(indx, input1);
+  float slice_sum_val = load_imval(indx, slice_sum);
+  store_imval(inval + stab_amt*(fabs(inval) - slice_sum_val/n), indx, output);
 }
 
-kernel void surround2(global float *data1,
-                      global float *data2,
+kernel void surround2(global imval* data1,
+                      global imval* data2,
                       float degree,
-                      global float *output) {
+                      global imval* output) {
   int indx = get_global_index();
   
-  float maxval = fmax(fabs(data1[indx]), fabs(data2[indx]));
+  float in1 = load_imval(indx, data1);
+  float in2 = load_imval(indx, data2);
+  
+  float maxval = fmax(fabs(in1), fabs(in2));
   if (maxval == 0) maxval = 1;
   
-  float part = smoothpart(data1[indx], degree/maxval);
+  float part = smoothpart(in1, degree/maxval);
   float pos = part;
   float neg = 1 - part;
   float ambig = 2*pos*neg;
   
-  part = smoothpart(data2[indx], degree/maxval);
+  part = smoothpart(in2, degree/maxval);
   pos *= part;
   neg *= (1 - part);
   
-  output[indx] = data1[indx] + data2[indx]*(pos + neg + ambig);
+  store_imval(in1 + in2*(pos + neg + ambig), indx, output);
 }
 )
