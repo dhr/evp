@@ -28,6 +28,7 @@ class CurveSupportOp {
   NDArray<SparseImageData,4> sparseComponents_;
   NDArray<SparseImageBuffer,4> filterBufs_;
   bool preloadBuffers_;
+  ContextID contextID_;
   
   void computePartPoints_(std::vector<f64> &ghist, i32 n,
                           std::vector<f64> &pnts) {
@@ -153,7 +154,7 @@ class CurveSupportOp {
                       p.numTotalOrientations, p.numCurvatures),
     filterBufs_(p.numTangentialComponents, p.numNormalComponents,
                 p.numTotalOrientations, p.numCurvatures),
-    preloadBuffers_(true)
+    preloadBuffers_(true), contextID_(-1)
   {
     i32 halfSize = p.kernelSize/2;
     std::tr1::array<f64, 4> i = {{halfSize, halfSize, ti, ki}};
@@ -213,10 +214,11 @@ class CurveSupportOp {
     PopAdaptor popper(stack);
     PushAdaptor pusher(stack);
     
-    if (preloadBuffers_ && !filterBufs_[0].valid()) {
+    if (preloadBuffers_ && contextID_ != CurrentContextID()) {
       LoadSparseFilters(sparseComponents_.begin(),
                         sparseComponents_.end(),
                         filterBufs_.begin());
+      contextID_ = CurrentContextID();
     }
     
     NDIndex<2> srcIndx;

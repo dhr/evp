@@ -23,9 +23,12 @@ struct LLSimpleCellOp : LLCellOp {
   LLBasisSetPtr tangentialBases_;
   LLBasisSetPtr normalBases_;
   NDArray<SparseImageData,2> filters_;
+  NDArray<SparseImageBuffer,2> buffers_;
   f32 scale_;
   f32 deg_;
   bool adapt_;
+  bool preloadBuffers_;
+  ContextID contextID_;
   
   LLSimpleCellOp(f64 theta,
                  LLBasisSetPtr normalBases, LLBasisSetPtr tangentialBases,
@@ -33,7 +36,9 @@ struct LLSimpleCellOp : LLCellOp {
   : orientation_(theta),
     tangentialBases_(tangentialBases), normalBases_(normalBases),
     filters_(tangentialBases->numBases(), normalBases->numBases()),
-    scale_(scale), deg_(deg), adapt_(adapt)
+    buffers_(tangentialBases->numBases(), normalBases->numBases()),
+    scale_(scale), deg_(deg), adapt_(adapt),
+    preloadBuffers_(true), contextID_(-1)
   {
     for (i32 ti = 0; ti < tangentialBases->numBases(); ++ti) {
       LLBasis& tbasis = (*tangentialBases)[ti];
@@ -53,9 +58,16 @@ struct LLSimpleCellOp : LLCellOp {
     PopAdaptor popper[2] = {PopAdaptor(stack[0]), PopAdaptor(stack[1])};
     PushAdaptor pusher[2] = {PushAdaptor(stack[0]), PushAdaptor(stack[1])};
     
+    if (preloadBuffers_ && contextID_ != CurrentContextID()) {
+      LoadSparseFilters(filters_.begin(), filters_.end(), buffers_.begin());
+      contextID_ = CurrentContextID();
+    }
+    
     for (i32 ti = 0; ti < filters_.size(0); ++ti) {
       for (i32 ni = 0; ni < filters_.size(1); ++ni) {
-        ImageBuffer filtered = Filter(image, filters_(ti, ni));
+        ImageBuffer filtered;
+        if (preloadBuffers_) filtered = Filter(image, buffers_(ti, ni));
+        else filtered = Filter(image, filters_(ti, ni));
         filtered *= scale_;
         pusher[0].output(filtered);
         pusher[1].output(Negate(popper[0].peek()));

@@ -7,8 +7,8 @@ kernel void lland2(global imval* data1,
                    global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
   
   if (adapt) {
     float maxval = fmax(in1, in2);
@@ -20,7 +20,7 @@ kernel void lland2(global imval* data1,
   float prod_plus_1 = cp1*cp2 + 1;
   float result = in1*(prod_plus_1 - cp1) +
                  in2*(prod_plus_1 - cp2);
-  store_imval(scale*result, indx, output);
+  store(imval, scale*result, indx, output);
 }
 
 kernel void llor2(global imval* data1,
@@ -31,8 +31,8 @@ kernel void llor2(global imval* data1,
                   global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
   
   if (adapt) {
     float maxval = fmax(in1, in2);
@@ -44,7 +44,7 @@ kernel void llor2(global imval* data1,
   float prod_plus_1 = cp1*cp2 + 1;
   float result = in1*(prod_plus_1 - cp1) +
                  in2*(prod_plus_1 - cp2);
-  store_imval(scale*result, indx, output);
+  store(imval, scale*result, indx, output);
 }
 
 kernel void lland3(global imval* data1,
@@ -56,9 +56,9 @@ kernel void lland3(global imval* data1,
                    global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
-  float in3 = load_imval(indx, data3);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
+  float in3 = load(imval, indx, data3);
   
   if (adapt) {
     float maxval = fmax(in1, in2);
@@ -73,7 +73,7 @@ kernel void lland3(global imval* data1,
   float result = in1*(prod_plus_1 - cp1) +
                  in2*(prod_plus_1 - cp2) +
                  in3*(prod_plus_1 - cp3);
-  store_imval(scale*result, indx, output);
+  store(imval, scale*result, indx, output);
 }
 
 kernel void llor3(global imval* data1,
@@ -85,9 +85,9 @@ kernel void llor3(global imval* data1,
                   global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
-  float in3 = load_imval(indx, data3);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
+  float in3 = load(imval, indx, data3);
   
   if (adapt) {
     float maxval = fmax(in1, in2);
@@ -102,7 +102,7 @@ kernel void llor3(global imval* data1,
   float result = in1*(prod_plus_1 - cp1) +
                  in2*(prod_plus_1 - cp2) +
                  in3*(prod_plus_1 - cp3);
-  store_imval(scale*result, indx, output);
+  store(imval, scale*result, indx, output);
 }
 
 kernel void lland4(global imval* data1,
@@ -115,10 +115,10 @@ kernel void lland4(global imval* data1,
                    global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
-  float in3 = load_imval(indx, data3);
-  float in4 = load_imval(indx, data4);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
+  float in3 = load(imval, indx, data3);
+  float in4 = load(imval, indx, data4);
   
   if (adapt) {
     float maxval = fmax(in1, in2);
@@ -136,7 +136,7 @@ kernel void lland4(global imval* data1,
                  in2*(prod_plus_1 - cp2) +
                  in3*(prod_plus_1 - cp3) +
                  in4*(prod_plus_1 - cp4);
-  store_imval(scale*result, indx, output);
+  store(imval, scale*result, indx, output);
 }
 
 kernel void llor4(global imval* data1,
@@ -149,10 +149,10 @@ kernel void llor4(global imval* data1,
                   global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
-  float in3 = load_imval(indx, data3);
-  float in4 = load_imval(indx, data4);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
+  float in3 = load(imval, indx, data3);
+  float in4 = load(imval, indx, data4);
   
   if (adapt) {
     float maxval = fmax(in1, in2);
@@ -170,7 +170,7 @@ kernel void llor4(global imval* data1,
                  in2*(prod_plus_1 - cp2) +
                  in3*(prod_plus_1 - cp3) +
                  in4*(prod_plus_1 - cp4);
-  store_imval(scale*result, indx, output);
+  store(imval, scale*result, indx, output);
 }
 
 kernel void lland5(global imval* data1,
@@ -184,11 +184,11 @@ kernel void lland5(global imval* data1,
                    global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
-  float in3 = load_imval(indx, data3);
-  float in4 = load_imval(indx, data4);
-  float in5 = load_imval(indx, data5);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
+  float in3 = load(imval, indx, data3);
+  float in4 = load(imval, indx, data4);
+  float in5 = load(imval, indx, data5);
   
   if (adapt) {
     float maxval = fmax(in1, in2);
@@ -209,7 +209,7 @@ kernel void lland5(global imval* data1,
                  in3*(prod_plus_1 - cp3) +
                  in4*(prod_plus_1 - cp4) +
                  in5*(prod_plus_1 - cp5);
-  store_imval(scale*result, indx, output);
+  store(imval, scale*result, indx, output);
 }
 
 kernel void llor5(global imval* data1,
@@ -223,11 +223,11 @@ kernel void llor5(global imval* data1,
                   global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
-  float in3 = load_imval(indx, data3);
-  float in4 = load_imval(indx, data4);
-  float in5 = load_imval(indx, data5);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
+  float in3 = load(imval, indx, data3);
+  float in4 = load(imval, indx, data4);
+  float in5 = load(imval, indx, data5);
   
   if (adapt) {
     float maxval = fmax(in1, in2);
@@ -248,7 +248,7 @@ kernel void llor5(global imval* data1,
                  in3*(prod_plus_1 - cp3) +
                  in4*(prod_plus_1 - cp4) +
                  in5*(prod_plus_1 - cp5);
-  store_imval(scale*result, indx, output);
+  store(imval, scale*result, indx, output);
 }
 
 kernel void lland6(global imval* data1,
@@ -263,12 +263,12 @@ kernel void lland6(global imval* data1,
                    global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
-  float in3 = load_imval(indx, data3);
-  float in4 = load_imval(indx, data4);
-  float in5 = load_imval(indx, data5);
-  float in6 = load_imval(indx, data6);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
+  float in3 = load(imval, indx, data3);
+  float in4 = load(imval, indx, data4);
+  float in5 = load(imval, indx, data5);
+  float in6 = load(imval, indx, data6);
   
   if (adapt) {
     float maxval = fmax(in1, in2);
@@ -292,7 +292,7 @@ kernel void lland6(global imval* data1,
                  in4*(prod_plus_1 - cp4) +
                  in5*(prod_plus_1 - cp5) +
                  in6*(prod_plus_1 - cp6);
-  store_imval(scale*result, indx, output);
+  store(imval, scale*result, indx, output);
 }
 
 kernel void llor6(global imval* data1,
@@ -307,12 +307,12 @@ kernel void llor6(global imval* data1,
                   global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
-  float in3 = load_imval(indx, data3);
-  float in4 = load_imval(indx, data4);
-  float in5 = load_imval(indx, data5);
-  float in6 = load_imval(indx, data6);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
+  float in3 = load(imval, indx, data3);
+  float in4 = load(imval, indx, data4);
+  float in5 = load(imval, indx, data5);
+  float in6 = load(imval, indx, data6);
   
   if (adapt) {
     float maxval = fmax(in1, in2);
@@ -336,6 +336,6 @@ kernel void llor6(global imval* data1,
                  in4*(prod_plus_1 - cp4) +
                  in5*(prod_plus_1 - cp5) +
                  in6*(prod_plus_1 - cp6);
-  store_imval(scale*result, indx, output);
+  store(imval, scale*result, indx, output);
 }
 )

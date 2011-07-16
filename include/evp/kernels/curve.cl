@@ -4,9 +4,9 @@ kernel void stabilize(global imval* input1,
                       int n, float stab_amt,
                       global imval* output) {
   int indx = get_global_index();
-  float inval = load_imval(indx, input1);
-  float slice_sum_val = load_imval(indx, slice_sum);
-  store_imval(inval + stab_amt*(fabs(inval) - slice_sum_val/n), indx, output);
+  float inval = load(imval, indx, input1);
+  float slice_sum_val = load(imval, indx, slice_sum);
+  store(imval, inval + stab_amt*(fabs(inval) - slice_sum_val/n), indx, output);
 }
 
 kernel void surround2(global imval* data1,
@@ -15,8 +15,8 @@ kernel void surround2(global imval* data1,
                       global imval* output) {
   int indx = get_global_index();
   
-  float in1 = load_imval(indx, data1);
-  float in2 = load_imval(indx, data2);
+  float in1 = load(imval, indx, data1);
+  float in2 = load(imval, indx, data2);
   
   float maxval = fmax(fabs(in1), fabs(in2));
   if (maxval == 0) maxval = 1;
@@ -30,6 +30,6 @@ kernel void surround2(global imval* data1,
   pos *= part;
   neg *= (1 - part);
   
-  store_imval(in1 + in2*(pos + neg + ambig), indx, output);
+  store(imval, in1 + in2*(pos + neg + ambig), indx, output);
 }
 )
