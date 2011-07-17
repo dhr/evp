@@ -6,6 +6,7 @@
 
 #include <clip.hpp>
 
+#include "evp/curve/curvetypes.hpp"
 #include "evp/curve/curvefeaturetypes.hpp"
 #include "evp/curve/loglin/llbasissets.hpp"
 #include "evp/curve/loglin/llendstoppedop.hpp"
@@ -118,12 +119,13 @@ class LLInitOps : public Monitorable {
     }
   }
   
-  void apply(const ImageBuffer& image, NDArray<ImageBuffer,2>& output) {
+  CurveBuffersPtr apply(const ImageBuffer& image) {
     i32 nt = params_.numOrientations;
     i32 nk = params_.numCurvatures;
     i32 nkc = params_.numCurvClasses;
     
-    output = NDArray<ImageBuffer,2>(2*nt, nk);
+    CurveBuffersPtr outputPtr(new CurveBuffers(2*nt, nk));
+    CurveBuffers& output = *outputPtr;
     
     for (i32 t = 0; t < nt; ++t) {
       for (i32 k = 0; k < nkc; ++k) {
@@ -143,6 +145,8 @@ class LLInitOps : public Monitorable {
         setProgress(f32(t*nkc + k + 1)/(nt*nkc));
       }
     }
+    
+    return outputPtr;
   }
 };
 

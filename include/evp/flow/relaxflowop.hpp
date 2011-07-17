@@ -5,6 +5,7 @@
 #include <clip.hpp>
 
 #include "evp/flow/flowsupportop.hpp"
+#include "evp/flow/flowtypes.hpp"
 #include "evp/flow/relaxflowopparams.hpp"
 
 namespace evp {
@@ -46,17 +47,18 @@ class RelaxFlowOp {
     }
   }
   
-  void apply(const NDArray<ImageBuffer,3>& input,
-             NDArray<ImageBuffer,3>& output) {
+  FlowBuffersPtr apply(const FlowBuffers& input) {
     i32 nt = params_.numOrientations;
     i32 nk = params_.numCurvatures;
     
-    output = NDArray<ImageBuffer,3>(nt, nk, nk);
+    FlowBuffersPtr outputPtr1(new FlowBuffers(nt, nk, nk));
+    FlowBuffersPtr outputPtr2(new FlowBuffers(nt, nk, nk));
+    
+    FlowBuffersPtr outputPtr = outputPtr1, temp = outputPtr2;
   
     NDIndex<3> index;
     for (i32 iter = 0; iter < iterations; iter++) {
-      const NDArray<ImageBuffer,3>& relaxSrc = iter == 0 ? input : output;
-      NDArray<ImageBuffer,3> temp(nt, nk, nk);
+      const FlowBuffers& relaxSrc = iter == 0 ? input : *outputPtr;
       
       for (i32 tii = 0; tii < nt; tii++) {
         index[0] = tii;
@@ -67,13 +69,15 @@ class RelaxFlowOp {
             
             ImageBuffer support = ops_(tii%nt, ktii, knii)->apply(relaxSrc);
             MulAdd(relaxSrc[index], support, relaxStep, support);
-            temp[index] = Bound(support, support);
+            (*temp)[index] = Bound(support, support);
           }
         }
       }
       
-      output = temp;
+      std::swap(outputPtr, temp);
     }
+    
+    return outputPtr;
   }
 };
 

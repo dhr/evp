@@ -5,6 +5,7 @@
 #include <clip.hpp>
 
 #include "evp/flow/flowinitopparams.hpp"
+#include "evp/flow/flowtypes.hpp"
 
 namespace evp {
 using namespace clip;
@@ -68,10 +69,11 @@ class FlowInitOps {
     blurUV_(params.blurUVSigma),
   blurVGrad_(params.blurVGradSigma) {}
   
-  void apply(const ImageBuffer& image, NDArray<ImageBuffer,3>& output) {
-    output = NDArray<ImageBuffer,3>(params_.numOrientations,
-                                    params_.numCurvatures,
-                                    params_.numCurvatures);
+  FlowBuffersPtr apply(const ImageBuffer& image) {
+    FlowBuffersPtr outputPtr(new FlowBuffers(params_.numOrientations,
+                                             params_.numCurvatures,
+                                             params_.numCurvatures));
+    FlowBuffers& output = *outputPtr;
     
     ImageBuffer gradX = ~image, gradY = ~image;
     if (params_.blurImageSigma > 0)
@@ -137,6 +139,8 @@ class FlowInitOps {
         }
       }
     }
+    
+    return outputPtr;
   }
 };
 

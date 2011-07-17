@@ -6,6 +6,8 @@
 
 #include <clip.hpp>
 
+#include "evp/flow/flowtypes.hpp"
+
 namespace evp {
 using namespace clip;
 
@@ -78,14 +80,15 @@ class JitteredFlowInitOps {
     }
   }
   
-  void apply(const ImageBuffer& image, NDArray<ImageBuffer>& output) {
+  FlowBuffersPtr apply(const ImageBuffer& image) {
     using namespace std;
     using namespace tr1;
     using namespace placeholders;
     
-    output = NDArray<ImageBuffer,3>(params_.numTotalOrientations,
-                                    params_.numCurvatures,
-                                    params_.numCurvatures);
+    FlowBuffersPtr outputPtr(new FlowBuffers(params_.numTotalOrientations,
+                                             params_.numCurvatures,
+                                             params_.numCurvatures));
+    FlowBuffers& output = *outputPtr;
     
     ImBufList stack;
     PopAdaptor popper(stack);
@@ -133,6 +136,8 @@ class JitteredFlowInitOps {
         }
       }
     }
+    
+    return outputPtr;
   }
 };
 

@@ -4,26 +4,28 @@
 
 #include <clip.hpp>
 
+#include "evp/util/memutil.hpp"
 #include "evp/util/ndarray.hpp"
 
 namespace evp {
 using namespace clip;
 
 template<i32 N>
-void ReadImageDataFromBufferArray(const NDArray<ImageBuffer,N> &buffers,
-                                  NDArray<ImageData,N> &data) {
+std::tr1::shared_ptr< NDArray<ImageData,N> >
+ReadImageDataFromBufferArray(const NDArray<ImageBuffer,N>& buffers) {
+  std::vector<i32> sizes(N);
+  for (i32 i = 0; i < N; ++i)
+    sizes[i] = buffers.size(i);
+  
+  std::tr1::shared_ptr< NDArray<ImageData,N> > dataPtr
+    (new NDArray<ImageData,N>(&sizes[0]));
+  NDArray<ImageData,N>& data = *dataPtr;
+  
   i32 numElems = buffers.numElems();
-  
-  if (data.numElems() != numElems) {
-    std::vector<i32> sizes(N);
-    for (i32 i = 0; i < N; ++i)
-      sizes[i] = buffers.size(i);
-    
-    data = NDArray<ImageData,N>(&sizes[0]);
-  }
-  
   for (i32 i = 0; i < numElems; ++i)
     data[i] = buffers[i].fetchData();
+  
+  return dataPtr;
 }
 
 template<i32 N>

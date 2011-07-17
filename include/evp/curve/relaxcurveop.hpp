@@ -6,6 +6,7 @@
 
 #include <clip.hpp>
 
+#include "evp/curve/curvetypes.hpp"
 #include "evp/curve/curvesupportop.hpp"
 #include "evp/curve/relaxcurveopparams.hpp"
 #include "evp/util/memutil.hpp"
@@ -42,8 +43,7 @@ class RelaxCurveOp : public Monitorable {
     }
   }
   
-  void apply(const NDArray<ImageBuffer,2>& input,
-             NDArray<ImageBuffer,2>& output) {
+  CurveBuffersPtr apply(const CurveBuffers& input) {
     i32 nt = params_.numOrientations;
     i32 nk = params_.numCurvatures;
     
@@ -52,7 +52,10 @@ class RelaxCurveOp : public Monitorable {
     assert(nt == input.size(0) && nk == input.size(1) &&
            "Input has incompatible size for current parameters.");
     
-    output = NDArray<ImageBuffer,2>(nt, nk);
+    CurveBuffersPtr outputPtr1(new CurveBuffers(nt, nk));
+    CurveBuffersPtr outputPtr2(new CurveBuffers(nt, nk));
+    
+    CurveBuffersPtr outputPtr = outputPtr1, temp = outputPtr2;
     
     NDIndex<2> index;
     for (i32 ti = 0; ti < nt; ti++) {
@@ -62,29 +65,29 @@ class RelaxCurveOp : public Monitorable {
         index[1] = ki;
         
         ImageBuffer inBuf = input[index];
-        output[index] = Bound(input[index]);
+        (*outputPtr)[index] = Bound(input[index]);
       }
     }
     
     for (i32 iter = 0; iter < iterations; iter++) {
-      NDArray<ImageBuffer,2> temp(nt, nk);
-      
       for (i32 ti = 0; ti < nt; ti++) {
         index[0] = ti;
         
         for (i32 ki = 0; ki < nk; ki++) {
           index[1] = ki;
           
-          ImageBuffer support = ops_(ti%ops_.size(0), ki)->apply(output);
+          ImageBuffer support = ops_(ti%ops_.size(0), ki)->apply(*outputPtr);
           
-          temp[index] = Bound(MulAdd(input[index], support, relaxStep_));
+          (*temp)[index] = Bound(MulAdd(input[index], support, relaxStep_));
           
           setProgress(f32(iter*nt*nk + ti*nk + ki + 1)/(iterations*nt*nk));
         }
       }
       
-      output = temp;
+      std::swap(outputPtr, temp);
     }
+    
+    return outputPtr;
   }
   
   inline f32 relaxationDelta() { return relaxStep_; }

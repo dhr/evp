@@ -10,14 +10,15 @@
 
 #include <clip.hpp>
 
-#include "evp/util/funcutils.hpp"
-#include "evp/util/memutil.hpp"
+#include "evp/curve/curvetypes.hpp"
 #include "evp/curve/curvecompatfuncs.hpp"
 #include "evp/curve/curvecompatkern.hpp"
 #include "evp/curve/relaxcurveop.hpp"
 #include "evp/curve/loglin/llfuncs.hpp"
 #include "evp/curve/loglin/llbufferops.hpp"
 #include "evp/curve/loglin/llsupportops.hpp"
+#include "evp/util/funcutils.hpp"
+#include "evp/util/memutil.hpp"
 
 namespace evp {
 using namespace clip;
@@ -201,7 +202,7 @@ class CurveSupportOp {
     return components_;
   }
   
-  ImageBuffer apply(const NDArray<ImageBuffer,2>& inputs, ImageBuffer output) {
+  ImageBuffer apply(const CurveBuffers& inputs, ImageBuffer output) {
     using namespace std::tr1;
     using namespace std::tr1::placeholders;
     
