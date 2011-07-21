@@ -2,7 +2,7 @@ CLIP_STRINGIFY(
 kernel void lland2(global imval* data1,
                    global imval* data2,
                    float degree,
-                   int adapt,
+                   char adapt,
                    float scale,
                    global imval* output) {
   int indx = get_global_index();
@@ -26,7 +26,7 @@ kernel void lland2(global imval* data1,
 kernel void llor2(global imval* data1,
                   global imval* data2,
                   float degree,
-                  int adapt,
+                  char adapt,
                   float scale,
                   global imval* output) {
   int indx = get_global_index();
@@ -51,7 +51,7 @@ kernel void lland3(global imval* data1,
                    global imval* data2,
                    global imval* data3,
                    float degree,
-                   int adapt,
+                   char adapt,
                    float scale,
                    global imval* output) {
   int indx = get_global_index();
@@ -80,7 +80,7 @@ kernel void llor3(global imval* data1,
                   global imval* data2,
                   global imval* data3,
                   float degree,
-                  int adapt,
+                  char adapt,
                   float scale,
                   global imval* output) {
   int indx = get_global_index();
@@ -110,7 +110,7 @@ kernel void lland4(global imval* data1,
                    global imval* data3,
                    global imval* data4,
                    float degree,
-                   int adapt,
+                   char adapt,
                    float scale,
                    global imval* output) {
   int indx = get_global_index();
@@ -144,7 +144,7 @@ kernel void llor4(global imval* data1,
                   global imval* data3,
                   global imval* data4,
                   float degree,
-                  int adapt,
+                  char adapt,
                   float scale,
                   global imval* output) {
   int indx = get_global_index();
@@ -179,7 +179,7 @@ kernel void lland5(global imval* data1,
                    global imval* data4,
                    global imval* data5,
                    float degree,
-                   int adapt,
+                   char adapt,
                    float scale,
                    global imval* output) {
   int indx = get_global_index();
@@ -218,7 +218,7 @@ kernel void llor5(global imval* data1,
                   global imval* data4,
                   global imval* data5,
                   float degree,
-                  int adapt,
+                  char adapt,
                   float scale,
                   global imval* output) {
   int indx = get_global_index();
@@ -258,7 +258,7 @@ kernel void lland6(global imval* data1,
                    global imval* data5,
                    global imval* data6,
                    float degree,
-                   int adapt,
+                   char adapt,
                    float scale,
                    global imval* output) {
   int indx = get_global_index();
@@ -302,7 +302,7 @@ kernel void llor6(global imval* data1,
                   global imval* data5,
                   global imval* data6,
                   float degree,
-                  int adapt,
+                  char adapt,
                   float scale,
                   global imval* output) {
   int indx = get_global_index();
