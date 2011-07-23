@@ -29,8 +29,8 @@ ReadImageDataFromBufferArray(const NDArray<ImageBuffer,N>& buffers) {
 }
 
 template<i32 N>
-inline void WriteImageDataToBufferArray(const NDArray<ImageData,N> &data,
-                                        NDArray<ImageBuffer,N> &buffers) {
+inline void WriteImageDataToBufferArray(const NDArray<ImageData,N>& data,
+                                        NDArray<ImageBuffer,N>& buffers) {
   i32 numElems = data.numElems();
   
   if (buffers.numElems() != numElems) {
@@ -43,8 +43,6 @@ inline void WriteImageDataToBufferArray(const NDArray<ImageData,N> &data,
   
   for (i32 i = 0; i < numElems; ++i)
     buffers[i] = ImageBuffer(data[i]);
-}
-
 }
 
 #endif
