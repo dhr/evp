@@ -23,7 +23,32 @@
 namespace evp {
 using namespace clip;
 
-inline void WriteCSV(const std::string &filename, const ImageData &data,
+inline void ReadImage(const std::string& filename, ImageData& data) {
+  std::size_t lastDot = filename.find_last_of('.');
+  if (lastDot == std::string::npos)
+    throw std::runtime_error("No extension; can't determine image type");
+  
+  std::string baseName = filename.substr(0, lastDot);
+  std::string extension = filename.substr(lastDot + 1);
+  
+  if (extension == "jpg" || extension == "jpeg") {
+#ifndef EVP_NO_JPEG
+    ReadJpeg(filename, data);
+#else
+    throw std::runtime_error("Support for jpg images was compiled out");
+#endif
+  }
+  
+  if (extension == "png") {
+#ifndef EVP_NO_PNG
+    ReadPng(filename, data);
+#else
+    throw std::runtime_error("Support for png images was compiled out");
+#endif
+  }
+}
+
+inline void WriteCSV(const std::string& filename, const ImageData& data,
                      i32 precision = 10, bool sciNot = true) {
   std::ofstream ofs(filename.c_str());
   
@@ -40,11 +65,11 @@ inline void WriteCSV(const std::string &filename, const ImageData &data,
     for (i32 x = 0; x < width - 1; ++x)
       ofs << std::setw(precision + 3) << data(x, y) << ", ";
     ofs << std::setw(precision + 3)
-    << data(data.width() - 1, y) << std::endl;
+        << data(data.width() - 1, y) << std::endl;
   }
 }
 
-inline void WriteCSV(const char *filename, f32 *data, i32 w, i32 h,
+inline void WriteCSV(const char* filename, f32* data, i32 w, i32 h,
                      i32 precision = 10, bool sciNot = true) {
   std::ofstream ofs(filename);
   
@@ -62,6 +87,7 @@ inline void WriteCSV(const char *filename, f32 *data, i32 w, i32 h,
   }
 }
 
+#ifndef EVP_NO_JPEG
 inline void OutputStack(ImBufList& list, bool writeCSV = false) {
   ImBufList::iterator it = list.begin();
   for (i32 i = 0; it != list.end(); it++, i++) {
@@ -84,6 +110,7 @@ inline void OutputStack(ImBufList& list, bool writeCSV = false) {
 inline void OutputBuffer(const ImageBuffer& buf, bool normalize = true) {
   WriteJpeg("Output/buffer.jpg", buf.fetchData(), normalize);
 }
+#endif
 
 }
 
