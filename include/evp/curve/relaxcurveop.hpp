@@ -20,15 +20,14 @@ class RelaxCurveOp : public Monitorable {
   RelaxCurveOpParams params_;
   NDArray<CurveSupportOpPtr,2> ops_;
   f32 relaxStep_;
+  i32 iterations_;
   
  public:
-  i32 iterations;
-  
   RelaxCurveOp(RelaxCurveOpParams &ps,
               i32 iters = 5,
               f32 relaxStep = 1.f)
   : params_(ps), ops_(ps.numTotalOrientations, ps.numCurvatures),
-    relaxStep_(relaxStep), iterations(iters)
+    relaxStep_(relaxStep), iterations_(iters)
   {
     for (i32 tii = 0; tii < params_.numTotalOrientations; ++tii) {
       f64 ti = tii*params_.orientationStep;
@@ -69,7 +68,7 @@ class RelaxCurveOp : public Monitorable {
       }
     }
     
-    for (i32 iter = 0; iter < iterations; iter++) {
+    for (i32 iter = 0; iter < iterations_; iter++) {
       for (i32 ti = 0; ti < nt; ti++) {
         index[0] = ti;
         
@@ -80,7 +79,7 @@ class RelaxCurveOp : public Monitorable {
           
           (*temp)[index] = Bound(MulAdd(input[index], support, relaxStep_));
           
-          setProgress(f32(iter*nt*nk + ti*nk + ki + 1)/(iterations*nt*nk));
+          setProgress(f32(iter*nt*nk + ti*nk + ki + 1)/(iterations_*nt*nk));
         }
       }
       
@@ -92,6 +91,9 @@ class RelaxCurveOp : public Monitorable {
   
   inline f32 relaxationDelta() { return relaxStep_; }
   inline void setRelaxationDelta(f32 delta) { relaxStep_ = delta; }
+  
+  inline f32 iterations() { return iterations_; }
+  inline void setIterations(i32 iterations) { iterations_ = iterations; }
 };
 
 }
