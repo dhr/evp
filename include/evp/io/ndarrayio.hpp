@@ -83,6 +83,9 @@ inline void WriteMatlabArray(const NDArray<ImageData,N>& data,
   i32 bytesPerImage = width*height*sizeof(f32);
   
   std::ofstream stream(fileName.c_str(), std::ios::out | std::ios::binary);
+  if (stream.fail())
+    throw std::runtime_error("Failed to open file " + fileName);
+  
   std::ios::pos_type initialPos = stream.tellp();
   
   std::string arrayName("evpout");
