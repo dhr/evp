@@ -20,8 +20,8 @@
 namespace evp {
 using namespace clip;
 
-inline void SlurpFile(const std::string &filename,
-                      std::string *str,
+inline void SlurpFile(const std::string& filename,
+                      std::string* str,
                       bool isBinary = false) {
   std::ios_base::openmode mode = std::ios::in | std::ios::ate;
   if (isBinary) mode |= std::ios::binary;
@@ -32,8 +32,8 @@ inline void SlurpFile(const std::string &filename,
   ifs.read(&(*str)[0], fileSize);
 }
 
-inline void WriteLLColumnsToPDF(const std::string &filename,
-                                const NDArray<ImageData,2> &cols,
+inline void WriteLLColumnsToPDF(const std::string& filename,
+                                const NDArray<ImageData,2>& cols,
                                 f32 threshold, f32 length = 1.2,
                                 f32 darken = 0.3f) {
   i32 width = cols(0, 0).width();
