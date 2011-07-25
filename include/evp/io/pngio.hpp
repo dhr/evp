@@ -40,8 +40,8 @@ inline void ReadPng(const std::string& filename, ImageData& data,
   png_set_sig_bytes(png_ptr, 8);
   png_read_info(png_ptr, info_ptr);
   
-  u32 width, height;
-  i32 bit_depth, color_type;
+  png_uint_32 width, height;
+  int bit_depth, color_type;
   png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
                NULL, NULL, NULL);
   
