@@ -74,8 +74,8 @@ namespace detail {
 }
 
 template<i32 N>
-inline void WriteMatlabArray(const NDArray<ImageData,N>& data,
-                             const std::string& fileName) {
+inline void WriteMatlabArray(const std::string& fileName,
+                             const NDArray<ImageData,N>& data) {
   const i32* sizes = data.sizes();
   i32 nImages = data.numElems();
   i32 width = data[0].width();
