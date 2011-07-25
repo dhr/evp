@@ -61,7 +61,7 @@ inline void WriteCSV(const std::string& filename, const ImageData& data,
   ofs << std::setprecision(precision);
   i32 width = data.width();
   i32 height = data.height();
-  for (i32 y = height - 1; y < height; --y) {
+  for (i32 y = height - 1; y >= 0; --y) {
     for (i32 x = 0; x < width - 1; ++x)
       ofs << std::setw(precision + 3) << data(x, y) << ", ";
     ofs << std::setw(precision + 3)
