@@ -14,6 +14,9 @@ inline void ReadPng(const std::string& filename, ImageData& data,
                     bool normalize = false) {
   FILE* file = fopen(filename.c_str(), "rb");
   
+  if (!file)
+    throw std::runtime_error("Unable to open file " + filename);
+  
   u8 sig[8];
   fread(sig, 1, 8, file);
   if (!png_check_sig(sig, 8))
@@ -42,27 +45,23 @@ inline void ReadPng(const std::string& filename, ImageData& data,
   png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
                NULL, NULL, NULL);
   
-  if (color_type == PNG_COLOR_TYPE_PALETTE)
+  if (color_type == PNG_COLOR_TYPE_PALETTE ||
+      (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) ||
+      png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) {
     png_set_expand(png_ptr);
-  if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
-    png_set_expand(png_ptr);
-  if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
-    png_set_expand(png_ptr);
+  }
+  
   if (bit_depth == 16)
     png_set_strip_16(png_ptr);
   
   if (color_type == PNG_COLOR_TYPE_RGB ||
       color_type == PNG_COLOR_TYPE_RGB_ALPHA) {
-    png_set_rgb_to_gray(png_ptr, 1, NULL, NULL);
+    // Equal weight rgb -> gray, since using the NULL defaults didn't work
+    png_set_rgb_to_gray(png_ptr, 1, 1, 1);
   }
   
   if (color_type & PNG_COLOR_MASK_ALPHA)
     png_set_strip_alpha(png_ptr);
-  
-  if (!png_get_valid(png_ptr, info_ptr, PNG_INFO_bKGD)) {
-    png_color_16 background = {0, 65535, 65535, 65535, 65535};
-    png_set_bKGD(png_ptr, info_ptr, &background);
-  }
   
   png_read_update_info(png_ptr, info_ptr);
   
