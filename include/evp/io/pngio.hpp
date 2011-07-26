@@ -56,8 +56,8 @@ inline void ReadPng(const std::string& filename, ImageData& data,
   
   if (color_type == PNG_COLOR_TYPE_RGB ||
       color_type == PNG_COLOR_TYPE_RGB_ALPHA) {
-    // Equal weight rgb -> gray, since using the NULL defaults didn't work
-    png_set_rgb_to_gray(png_ptr, 1, 1, 1);
+    // Default weights for rgb -> gray, = 0.21*R + 0.72*G + 0.07*B
+    png_set_rgb_to_gray(png_ptr, 1, -1, -1);
   }
   
   if (color_type & PNG_COLOR_MASK_ALPHA)
