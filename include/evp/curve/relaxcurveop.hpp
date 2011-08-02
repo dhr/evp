@@ -57,28 +57,18 @@ class RelaxCurveOp : public Monitorable {
     CurveBuffersPtr outputPtr = outputPtr1, temp = outputPtr2;
     
     NDIndex<2> index;
-    for (i32 ti = 0; ti < nt; ti++) {
-      index[0] = ti;
-      
-      for (i32 ki = 0; ki < nk; ki++) {
-        index[1] = ki;
-        
-        ImageBuffer inBuf = input[index];
-        (*outputPtr)[index] = Bound(input[index]);
-      }
-    }
-    
     for (i32 iter = 0; iter < iterations_; iter++) {
+      const CurveBuffers& relaxSrc = iter == 0 ? input : *outputPtr;
+      
       for (i32 ti = 0; ti < nt; ti++) {
         index[0] = ti;
         
         for (i32 ki = 0; ki < nk; ki++) {
           index[1] = ki;
           
-          ImageBuffer support = ops_(ti%ops_.size(0), ki)->apply(*outputPtr);
-          
-          (*temp)[index] = Bound(MulAdd(input[index], support, relaxStep_));
-          
+          ImageBuffer support = ops_(ti%ops_.size(0), ki)->apply(relaxSrc);
+          MulAdd(relaxSrc[index], support, relaxStep_, support);
+          (*temp)[index] = Bound(support, support);
           setProgress(f32(iter*nt*nk + ti*nk + ki + 1)/(iterations_*nt*nk));
         }
       }

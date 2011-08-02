@@ -275,7 +275,7 @@ class CurveSupportOp {
                    popper, output);
   }
   
-  ImageBuffer apply(NDArray<ImageBuffer,2>& input) {
+  ImageBuffer apply(const CurveBuffers& input) {
     return apply(input, ~input[0]);
   }
 };
