@@ -21,13 +21,15 @@ class RelaxCurveOp : public Monitorable {
   NDArray<CurveSupportOpPtr,2> ops_;
   f32 relaxStep_;
   i32 iterations_;
+  f32 threshold_;
   
  public:
   RelaxCurveOp(RelaxCurveOpParams &ps,
-              i32 iters = 5,
-              f32 relaxStep = 1.f)
+               i32 iters = 5,
+               f32 relaxStep = 1.f,
+               f32 threshold = 0.f)
   : params_(ps), ops_(ps.numTotalOrientations, ps.numCurvatures),
-    relaxStep_(relaxStep), iterations_(iters)
+    relaxStep_(relaxStep), iterations_(iters), threshold_(threshold)
   {
     for (i32 tii = 0; tii < params_.numTotalOrientations; ++tii) {
       f64 ti = tii*params_.orientationStep;
@@ -68,6 +70,8 @@ class RelaxCurveOp : public Monitorable {
           
           ImageBuffer support = ops_(ti%ops_.size(0), ki)->apply(relaxSrc);
           MulAdd(relaxSrc[index], support, relaxStep_, support);
+          if (threshold_ > 0)
+            Threshold(support, threshold_, support);
           (*temp)[index] = Bound(support, support);
           setProgress(f32(iter*nt*nk + ti*nk + ki + 1)/(iterations_*nt*nk));
         }
