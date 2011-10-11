@@ -55,7 +55,7 @@ struct DiscretizeFlowOp : public BasicOp {
 };
 DiscretizeFlowOp DiscretizeFlow;
 
-class FlowInitOps {
+class FlowInitOps : public Monitorable {
   FlowInitOpParams &params_;
   GradientOp gradient_;
   GaussianBlurOp blurImage_;
@@ -67,7 +67,7 @@ class FlowInitOps {
   : params_(params),
     blurImage_(params.blurImageSigma),
     blurUV_(params.blurUVSigma),
-  blurVGrad_(params.blurVGradSigma) {}
+    blurVGrad_(params.blurVGradSigma) {}
   
   FlowBuffersPtr apply(const ImageBuffer& image) {
     FlowBuffersPtr outputPtr(new FlowBuffers(params_.numOrientations,
@@ -88,6 +88,8 @@ class FlowInitOps {
     Rescale(confs, params_.thetaThreshold, 1.f,
             params_.minConf, 1.f, true,
             confs);
+    
+    setProgress(0.1f);
     
     ImageBuffer kts = ~image, kns = ~image;
     if (params_.estimateCurvatures) {
@@ -121,6 +123,8 @@ class FlowInitOps {
     for (i32 ti = 0; ti < params_.numOrientations; ++ti) {
       index[0] = ti;
       
+      setProgress(0.2f + 0.8f*f32(ti)/params_.numOrientations);
+      
       for (i32 kti = 0; kti < params_.numCurvatures; ++kti) {
         index[1] = kti;
         
@@ -139,6 +143,8 @@ class FlowInitOps {
         }
       }
     }
+    
+    setProgress(1.f);
     
     return outputPtr;
   }

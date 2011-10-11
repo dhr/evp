@@ -11,7 +11,7 @@
 namespace evp {
 using namespace clip;
 
-class RelaxFlowOp {    
+class RelaxFlowOp : public Monitorable {    
  private:
   RelaxFlowOpParams params_;
   NDArray<FlowSupportOpPtr,3> ops_;
@@ -71,6 +71,8 @@ class RelaxFlowOp {
             MulAdd(relaxSrc[index], support, relaxStep, support);
             (*temp)[index] = Bound(support, support);
           }
+          
+          setProgress(f32((iter*nt + tii)*nk + ktii + 1)/iterations/nt/nk);
         }
       }
       

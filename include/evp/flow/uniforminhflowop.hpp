@@ -81,7 +81,7 @@ class UniformInhibitionFlowSupportOp : public FlowSupportOp {
     for (i32 i = 0; i < kernels_.numElems(); ++i) {
       ImageDataValues &data = kernels_[i].data();
       
-      for (i32 j = 0; j < data.size(); ++j) {
+      for (i32 j = 0; j < i32(data.size()); ++j) {
         data[j] /= data[j] >= 0 ? totalExcitation : totalInhibition;
       }
     }

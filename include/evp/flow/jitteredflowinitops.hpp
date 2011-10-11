@@ -7,6 +7,7 @@
 #include <clip.hpp>
 
 #include "evp/flow/flowtypes.hpp"
+#include "evp/util/gabor.hpp"
 
 namespace evp {
 using namespace clip;
@@ -35,9 +36,9 @@ void LocalNonMaximumSuppression(i32 n, i32 radius,
   }
 }
 
-class JitteredFlowInitOps {
+class JitteredFlowInitOps : public Monitorable {
   FlowInitOpParams params_;
-  NDArray<ImageData> filters_;
+  NDArray<ImageData,4> filters_;
   f64 power_;
   i32 numOrientationJitters_;
   i32 numScaleJitters_;
@@ -51,7 +52,7 @@ class JitteredFlowInitOps {
                       i32 numOffsets = 5,
                       i32 baseScale = 2)
   : params_(params),
-    filters_(4, params.numOrientations, numOrientationJitters,
+    filters_(params.numOrientations, numOrientationJitters,
              numScaleJitters, numOffsets),
     numOrientationJitters_(numOrientationJitters),
     numScaleJitters_(numScaleJitters),
@@ -85,7 +86,7 @@ class JitteredFlowInitOps {
     using namespace tr1;
     using namespace placeholders;
     
-    FlowBuffersPtr outputPtr(new FlowBuffers(params_.numTotalOrientations,
+    FlowBuffersPtr outputPtr(new FlowBuffers(params_.numOrientations,
                                              params_.numCurvatures,
                                              params_.numCurvatures));
     FlowBuffers& output = *outputPtr;
@@ -114,6 +115,9 @@ class JitteredFlowInitOps {
         avg /= n/2.f;
         
         pusher.output(avg);
+        setProgress(0.9f*f32(ti*numOrientationJitters_ + jti + 1)/
+                    params_.numOrientations/
+                    numOrientationJitters_);
       }
     }
     
@@ -131,10 +135,12 @@ class JitteredFlowInitOps {
         for (i32 knii = 0; knii < params_.numCurvatures; ++knii) {
           if (!ktii && !knii) continue;
           
-          NDIndex target(3, ti, ktii, knii);
+          NDIndex<3> target(ti, ktii, knii);
           output[target] = temp.clone();
         }
       }
+      
+      setProgress(0.9f + 0.1f*(1.f - f32(ti)/params_.numOrientations));
     }
     
     return outputPtr;
