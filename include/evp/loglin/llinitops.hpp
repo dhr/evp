@@ -1,6 +1,6 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLINITOPS_H
-#define EVP_CURVE_LOGLIN_LLINITOPS_H
+#ifndef EVP_LOGLIN_LLINITOPS_H
+#define EVP_LOGLIN_LLINITOPS_H
 
 #include <sstream>
 
@@ -8,10 +8,10 @@
 
 #include "evp/curve/curvetypes.hpp"
 #include "evp/curve/curvefeaturetypes.hpp"
-#include "evp/curve/loglin/llbasissets.hpp"
-#include "evp/curve/loglin/llendstoppedop.hpp"
-#include "evp/curve/loglin/llinitopparams.hpp"
-#include "evp/curve/loglin/llsimplecellop.hpp"
+#include "evp/loglin/llbasissets.hpp"
+#include "evp/loglin/llendstoppedop.hpp"
+#include "evp/loglin/llinitopparams.hpp"
+#include "evp/loglin/llsimplecellop.hpp"
 #include "evp/util/mathutil.hpp"
 #include "evp/util/memutil.hpp"
 #include "evp/util/monitorable.hpp"

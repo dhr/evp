@@ -1,6 +1,6 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLBASIS_H
-#define EVP_CURVE_LOGLIN_LLBASIS_H
+#ifndef EVP_LOGLIN_LLBASIS_H
+#define EVP_LOGLIN_LLBASIS_H
 
 #include "evp/util/memutil.hpp"
 

@@ -5,8 +5,8 @@
 #include <clip.hpp>
 
 #include "evp/kernels.hpp"
-#include "evp/curve/loglin/llinitops.hpp"
-#include "evp/curve/loglin/llinitopparams.hpp"
+#include "evp/loglin/llinitops.hpp"
+#include "evp/loglin/llinitopparams.hpp"
 #include "evp/curve/lineedgelocatorop.hpp"
 #include "evp/curve/relaxcurveop.hpp"
 #include "evp/curve/relaxcurveopparams.hpp"

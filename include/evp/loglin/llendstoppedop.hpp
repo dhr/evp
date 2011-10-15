@@ -1,6 +1,6 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLENDSTOPPEDOP_H
-#define EVP_CURVE_LOGLIN_LLENDSTOPPEDOP_H
+#ifndef EVP_LOGLIN_LLENDSTOPPEDOP_H
+#define EVP_LOGLIN_LLENDSTOPPEDOP_H
 
 #include <cmath>
 
@@ -8,8 +8,8 @@
 
 #include <clip.hpp>
 
-#include "evp/curve/loglin/llcellop.hpp"
-#include "evp/curve/loglin/llsimplecellop.hpp"
+#include "evp/loglin/llcellop.hpp"
+#include "evp/loglin/llsimplecellop.hpp"
 
 namespace evp {
 using namespace clip;

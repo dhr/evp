@@ -1,15 +1,15 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLBASISSETS_H
-#define EVP_CURVE_LOGLIN_LLBASISSETS_H
+#ifndef EVP_LOGLIN_LLBASISSETS_H
+#define EVP_LOGLIN_LLBASISSETS_H
 
 #include <cmath>
 
 #include <valarray>
 
-#include "evp/curve/loglin/llbasisset.hpp"
-#include "evp/curve/loglin/llfuncs.hpp"
-#include "evp/curve/loglin/llbufferops.hpp"
-#include "evp/curve/loglin/llsupportops.hpp"
+#include "evp/loglin/llbasisset.hpp"
+#include "evp/loglin/llfuncs.hpp"
+#include "evp/loglin/llbufferops.hpp"
+#include "evp/loglin/llsupportops.hpp"
 
 namespace evp {
 using namespace clip;

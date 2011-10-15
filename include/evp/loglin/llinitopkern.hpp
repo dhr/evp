@@ -1,9 +1,9 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLINITOPKERN_H
-#define EVP_CURVE_LOGLIN_LLINITOPKERN_H
+#ifndef EVP_LOGLIN_LLINITOPKERN_H
+#define EVP_LOGLIN_LLINITOPKERN_H
 
 #include "evp/util/mathutil.hpp"
-#include "evp/curve/loglin/llbasis.hpp"
+#include "evp/loglin/llbasis.hpp"
 
 namespace evp {
 using namespace clip;

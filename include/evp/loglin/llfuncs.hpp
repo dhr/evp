@@ -1,13 +1,13 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLFUNCS_H
-#define EVP_CURVE_LOGLIN_LLFUNCS_H
+#ifndef EVP_LOGLIN_LLFUNCS_H
+#define EVP_LOGLIN_LLFUNCS_H
 
 #include <cmath>
 
 #include <vector>
 
 #include "evp/util/funcutils.hpp"
-#include "evp/curve/loglin/llbasis.hpp"
+#include "evp/loglin/llbasis.hpp"
 
 namespace evp {
 using namespace clip;

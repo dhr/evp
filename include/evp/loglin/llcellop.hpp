@@ -1,6 +1,6 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLCELLOP_H
-#define EVP_CURVE_LOGLIN_LLCELLOP_H
+#ifndef EVP_LOGLIN_LLCELLOP_H
+#define EVP_LOGLIN_LLCELLOP_H
 
 namespace evp {
 using namespace clip;

@@ -1,10 +1,10 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLSUPPORTOPS_H
-#define EVP_CURVE_LOGLIN_LLSUPPORTOPS_H
+#ifndef EVP_LOGLIN_LLSUPPORTOPS_H
+#define EVP_LOGLIN_LLSUPPORTOPS_H
 
 #include <clip.hpp>
 
-#include "evp/curve/loglin/llbufferops.hpp"
+#include "evp/loglin/llbufferops.hpp"
 
 namespace evp {
 using namespace clip;

@@ -1,11 +1,11 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLBASISSET_H
-#define EVP_CURVE_LOGLIN_LLBASISSET_H
+#ifndef EVP_LOGLIN_LLBASISSET_H
+#define EVP_LOGLIN_LLBASISSET_H
 
 #include <algorithm>
 #include <vector>
 
-#include "evp/curve/loglin/llbasis.hpp"
+#include "evp/loglin/llbasis.hpp"
 
 namespace evp {
 using namespace clip;

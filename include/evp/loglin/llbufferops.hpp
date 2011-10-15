@@ -1,6 +1,6 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLOPS_H
-#define EVP_CURVE_LOGLIN_LLOPS_H
+#ifndef EVP_LOGLIN_LLOPS_H
+#define EVP_LOGLIN_LLOPS_H
 
 #include <cassert>
 #include <cmath>

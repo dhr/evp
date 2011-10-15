@@ -14,9 +14,9 @@
 #include "evp/curve/curvecompatfuncs.hpp"
 #include "evp/curve/curvecompatkern.hpp"
 #include "evp/curve/relaxcurveop.hpp"
-#include "evp/curve/loglin/llfuncs.hpp"
-#include "evp/curve/loglin/llbufferops.hpp"
-#include "evp/curve/loglin/llsupportops.hpp"
+#include "evp/loglin/llfuncs.hpp"
+#include "evp/loglin/llbufferops.hpp"
+#include "evp/loglin/llsupportops.hpp"
 #include "evp/util/funcutils.hpp"
 #include "evp/util/memutil.hpp"
 

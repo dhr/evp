@@ -1,6 +1,6 @@
 #pragma once
-#ifndef EVP_CURVE_LOGLIN_LLSIMPLECELLOP_H
-#define EVP_CURVE_LOGLIN_LLSIMPLECELLOP_H
+#ifndef EVP_LOGLIN_LLSIMPLECELLOP_H
+#define EVP_LOGLIN_LLSIMPLECELLOP_H
 
 #include <cmath>
 
@@ -11,8 +11,8 @@
 
 #include <clip.hpp>
 
-#include "evp/curve/loglin/llcellop.hpp"
-#include "evp/curve/loglin/llinitopkern.hpp"
+#include "evp/loglin/llcellop.hpp"
+#include "evp/loglin/llinitopkern.hpp"
 #include "evp/util/ndarray.hpp"
 
 namespace evp {
