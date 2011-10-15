@@ -4,6 +4,9 @@
 
 #include <clip.hpp>
 
+namespace evp {
+namespace detail {
+
 inline const char* LogLinKernels() {
   static const char* kernels =
     #include <clip/kernels/util.cl>
@@ -26,9 +29,12 @@ inline const char* FlowKernels() {
   static const char* kernels =
     #include <clip/kernels/util.cl>
     #include "kernels/util.cl"
-    #include "kernels/curve.cl"
+    #include "kernels/flow.cl"
     ;
   return kernels;
+}
+
+}
 }
 
 #endif
