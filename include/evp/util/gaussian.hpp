@@ -1,6 +1,6 @@
 #pragma once
-#ifndef EVP_UTIL_FUNCUTILS_H
-#define EVP_UTIL_FUNCUTILS_H
+#ifndef EVP_UTIL_GAUSSIAN_H
+#define EVP_UTIL_GAUSSIAN_H
 
 #include <limits>
 
@@ -40,17 +40,6 @@ inline f64 DGaussian(f64 x, f64 s, i32 n)
     default: // Nothing further is implemented... this'll show 'em!
       return std::numeric_limits<f64>::signaling_NaN();
   }
-}
-
-inline f64 SmoothPart(f64 x, f64 degree)
-{
-  x *= degree;
-  
-  if (x < -0.5) return 0;
-  if (x > 0.5) return 1;
-  
-  f64 temp = exp(-1/(0.5 + x));
-  return temp/(temp + exp(-1/(0.5 -x )));
 }
 
 }

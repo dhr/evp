@@ -44,8 +44,6 @@ kernel void rescale(global imval* input,
   store(imval, outval, indx, output);
 }
 
-#define PI 3.14159265358979323846f
-
 kernel void flowdiscr(global imval* confs,
                       global imval* thetas,
                       float targ_theta, float theta_step, int npis,

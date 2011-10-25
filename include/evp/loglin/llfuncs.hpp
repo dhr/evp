@@ -6,7 +6,7 @@
 
 #include <vector>
 
-#include "evp/util/funcutils.hpp"
+#include "evp/util/gaussian.hpp"
 #include "evp/loglin/llbasis.hpp"
 
 namespace evp {
@@ -22,6 +22,16 @@ class NthDOfG : public SimpleFunc {
   
   f64 operator()(f64 x) { return DGaussian(x, sigma, n); }
 };
+
+inline f64 SmoothPart(f64 x, f64 degree) {
+  x *= degree;
+  
+  if (x < -0.5) return 0;
+  if (x > 0.5) return 1;
+  
+  f64 temp = exp(-1/(0.5 + x));
+  return temp/(temp + exp(-1/(0.5 -x )));
+}
 
 class StabilizedPartition : public SimpleFunc {
  public:

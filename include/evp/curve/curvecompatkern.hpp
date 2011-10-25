@@ -7,7 +7,7 @@
 #include <tr1/array>
 
 #include "evp/curve/relaxcurveopparams.hpp"
-#include "evp/util/funcutils.hpp"
+#include "evp/util/gaussian.hpp"
 
 namespace evp {
 using namespace clip;

@@ -28,7 +28,6 @@ struct RelaxFlowOpParams {
   // Inferred parameters
   
   f32 orientationStep;
-  i32 numTotalOrientations;
   i32 numPis;
   i32 numCurvClasses;
   f32 minSupport;
@@ -40,15 +39,15 @@ struct RelaxFlowOpParams {
     numCurvatures(nk),
     curvatureStep(0.1),
     kernelSize(9),
-    subsamples(3),
+    subsamples(5),
     flowSupport(CreateUniformInhibitionFlowSupportOp),
 //    flowSupport(CreateInhibitionlessFlowSupportOp),
     orientationStep(M_PI/nt),
     numPis(1),
     numCurvClasses(nk/2 + 1),
-    minSupport(0.1), 
+    minSupport(0.005), 
     maxSupport(1),
-    inhRatio(5) {}
+    inhRatio(2) {}
 };
 
 }

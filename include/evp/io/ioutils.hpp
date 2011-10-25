@@ -296,8 +296,8 @@ inline void WriteFlowToPDF(const std::string &filename,
     maxVal = std::max(maxVal, reduction[tii].data().max());
   }
   
-  std::cout << "average p: " << avgP/nnz << std::endl;
-  std::cout << "max p: " << maxP << std::endl;
+//  std::cout << "average p: " << avgP/nnz << std::endl;
+//  std::cout << "max p: " << maxP << std::endl;
   
   std::ofstream ofs(filename.c_str());
   PDFWriter pdf(ofs, flowWidth, flowHeight);

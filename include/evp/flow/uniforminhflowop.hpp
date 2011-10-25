@@ -30,7 +30,7 @@ class UniformInhibitionFlowSupportOp : public FlowSupportOp {
   }
   
   f32 calculateInhibitoryConnections() {
-    i32 nto = params_.numTotalOrientations;
+    i32 nto = params_.numOrientations;
     i32 nk = params_.numCurvatures;
     i32 kernSize = params_.kernelSize;
     i32 radius = kernSize/2;

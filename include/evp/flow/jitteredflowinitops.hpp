@@ -46,7 +46,7 @@ class JitteredFlowInitOps : public Monitorable {
   ImageBuffer maxBuf_;
   
  public:
-  JitteredFlowInitOps(FlowInitOpParams &params,
+  JitteredFlowInitOps(FlowInitOpParams& params,
                       i32 numOrientationJitters = 5,
                       i32 numScaleJitters = 5,
                       i32 numOffsets = 5,

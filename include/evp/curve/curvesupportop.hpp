@@ -17,7 +17,7 @@
 #include "evp/loglin/llfuncs.hpp"
 #include "evp/loglin/llbufferops.hpp"
 #include "evp/loglin/llsupportops.hpp"
-#include "evp/util/funcutils.hpp"
+#include "evp/util/gaussian.hpp"
 #include "evp/util/memutil.hpp"
 
 namespace evp {
