@@ -35,7 +35,7 @@ class CurveCompatKern : public ImageData {
     for (i32 yji = 0; yji < p.kernelSize; yji++, j[1] += 1) {
       j[0] = 0;
       for (i32 xji = 0; j[0] < p.kernelSize; xji++, j[0] += 1) {
-        ProjectionDifference(i, j, p.numTotalOrientations, diffs);
+        ProjectionDifference(i, j, p.numPis, diffs);
         trDiffData(xji, yji) = diffs.transport;
         
         f64 expansion = 1 + p.dilation*fabs(diffs.transport);

@@ -55,6 +55,7 @@ class RelaxCurveOpParams {
   
   FeatureType feature() { return featureType; }
   i32 orientationsPerPi() { return numOrientations; }
+  bool piSymmetric() { return featureType == Lines; }
   i32 curvatures() { return numCurvatures; }
 };
 
