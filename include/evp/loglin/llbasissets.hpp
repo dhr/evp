@@ -98,7 +98,7 @@ class LLStabilizerBasisSet : public LLBasisSet {
     computePartPoints(sigma, pts);
     for (i32 i = 0; i < n; ++i) {
       SimpleFunc *f =
-      new StabilizedPartition(pts, i, sigma, stabilizer, degree);
+        new StabilizedPartition(pts, i, sigma, stabilizer, degree);
       bases_[i] = LLBasis(f, kernSize(), 1, 0, false);
     }
   }

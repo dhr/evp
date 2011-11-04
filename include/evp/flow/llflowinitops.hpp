@@ -11,22 +11,25 @@ class LLFlowInitOps : public Monitorable {
   std::vector<LLGabor> llgabors_[4];
   
   f32 wavelength_, sigma_, aspect_, degree_;
+  bool adapt_;
 
  public:
   LLFlowInitOps(FlowInitOpParams& params)
-  : params_(params), wavelength_(20), sigma_(3.5),
-    aspect_(1), degree_(128)
+  : params_(params), wavelength_(8), sigma_(2),
+    aspect_(1), degree_(32), adapt_(true)
   {
     i32 nt = params.numOrientations;
     f32 dt = params.orientationStep;
     f32 dp = M_PI/2;
+    f32 ds = 0.5;
     f32 w = wavelength_, s = sigma_, a = aspect_, deg = degree_;
+    bool ad = adapt_;
     
     for (i32 i = 0; i < nt; ++i) {
-      llgabors_[0].push_back(LLGabor(i*dt, dt, w, 0, dp, s, a, deg, false));
-      llgabors_[1].push_back(LLGabor(i*dt, dt, w, dp, dp, s, a, deg, false));
-      llgabors_[2].push_back(LLGabor(i*dt, dt, w, 2*dp, dp, s, a, deg, false));
-      llgabors_[3].push_back(LLGabor(i*dt, dt, w, 3*dp, dp, s, a, deg, false));
+      llgabors_[0].push_back(LLGabor(i*dt, dt, w, 0, dp, s, ds, a, deg, ad));
+      llgabors_[1].push_back(LLGabor(i*dt, dt, w, dp, dp, s, ds, a, deg, ad));
+      llgabors_[2].push_back(LLGabor(i*dt, dt, w, 2*dp, dp, s, ds, a, deg, ad));
+      llgabors_[3].push_back(LLGabor(i*dt, dt, w, 3*dp, dp, s, ds, a, deg, ad));
     }
   }
   

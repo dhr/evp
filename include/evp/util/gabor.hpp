@@ -27,6 +27,12 @@ inline f64 DGaborDPhase(f64 x, f64 y, f64 w, f64 p, f64 s, f64 a) {
   return gauss*cos(off);
 }
 
+inline f64 DGaborDScale(f64 x, f64 y, f64 w, f64 p, f64 s, f64 a) {
+  f64 g = Gabor(x, y, w, p, s, a);
+  f64 x2 = x*x, y2 = y*y, s3 = s*s*s, a2 = a*a;
+  return g*(a2*y2/s3 + x2/s3 - 2/s);
+}
+
 inline ImageData MakeGabor(f64 theta,
                            f64 wavelength,
                            f64 phase,
