@@ -98,7 +98,7 @@ inline void WriteLLColumnsToPDF(const std::string& filename,
 
 inline void WriteCurveCompatibilitiesToPDF
     (const std::string &filename, const NDArray<ImageData,4> &components,
-     f32 length = 0.8f, f32 threshFactor = 0.0001f) {
+     bool piSymmetric, f32 length = 0.8f, f32 threshFactor = 0.0001f) {
   NDArray<ImageData,2> compats(components.size(2), components.size(3));
   i32 kernSize = components[0].width();
   
@@ -108,8 +108,7 @@ inline void WriteCurveCompatibilitiesToPDF
       ImageData &compat = compats(tii, kii);
       
       for (i32 ni = 0; ni < components.size(1); ni++) {
-        for (i32 tani = 0;
-             tani < components.size(0); tani++) {
+        for (i32 tani = 0; tani < components.size(0); tani++) {
           compat.data() += components(tani, ni, tii, kii).data();
         }
       }
@@ -151,6 +150,7 @@ inline void WriteCurveCompatibilitiesToPDF
   pdf.translate(0.5f, 0.5f);
   
   length /= 2;
+  i32 numPis = 2 - piSymmetric;
   for (i32 y = 0; y < kernSize; y++) {
     for (i32 x = 0; x < kernSize; x++) {
       std::vector<std::pair<f32, int> > lines(reductions.size());
@@ -168,7 +168,7 @@ inline void WriteCurveCompatibilitiesToPDF
         
         i32 tii = lines[i].second;
         f32 val = reductions[tii](x, y);
-        f32 theta = tii/f32(reductions.size())*2*M_PI;
+        f32 theta = tii/f32(reductions.size())*numPis*M_PI;
         f32 xoff = cos(theta)*length;
         f32 yoff = sin(theta)*length;
         
