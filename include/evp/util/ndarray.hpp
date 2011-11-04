@@ -25,11 +25,11 @@ class NDArray {
   
  public:
   NDArray() : elements_(1) {
-    memset(sizes_, 1, N*sizeof(size_type));
+    std::fill_n(sizes_, N, 1);
   }
  
-  explicit NDArray(T init) : elements_(1) {
-    elements_[0] = init;
+  explicit NDArray(T init) : elements_(1, init) {
+    std::fill_n(sizes_, N, 1);
   }
   
   NDArray(const size_type *const sizes) {
