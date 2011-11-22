@@ -33,8 +33,9 @@ inline void SlurpFile(const std::string& filename,
 }
 
 inline void WriteLLColumnsToPDF(const std::string& filename,
-                                const NDArray<ImageData,2>& cols,
-                                f32 threshold, f32 length = 1.2,
+                                const CurveData& cols,
+                                f32 threshold = 0.01f,
+                                f32 length = 1.2,
                                 f32 darken = 0.3f) {
   i32 width = cols(0, 0).width();
   i32 height = cols(0, 0).height();
@@ -186,7 +187,7 @@ inline void WriteCurveCompatibilitiesToPDF
 }
 
 inline void WriteFlowCompatToPDF(const std::string &filename,
-                                 const NDArray<ImageData,3> &flow,
+                                 const FlowData& flow,
                                  i32 ktToShow = -1, i32 knToShow = -1,
                                  f32 length = 0.8f,
                                  f32 threshold = 0.001f) {
@@ -226,7 +227,7 @@ inline void WriteFlowCompatToPDF(const std::string &filename,
   length /= 2;
   for (i32 y = 0; y < flowHeight; y++) {
     for (i32 x = 0; x < flowWidth; x++) {
-      std::vector<std::pair<f32, int> > lines(reduction.size());
+      std::vector< std::pair<f32, int> > lines(reduction.size());
       
       for (i32 tii = 0; tii < i32(lines.size()); tii++) {
         lines[tii] = std::make_pair(reduction[tii](x, y), tii);
@@ -257,11 +258,11 @@ inline void WriteFlowCompatToPDF(const std::string &filename,
 }
 
 inline void WriteFlowToPDF(const std::string &filename,
-                           const NDArray<ImageData,3> &flow,
+                           const FlowData& flow,
+                           f32 threshold = 0.01f,
                            f32 power = 1,
                            i32 ktToShow = -1, i32 knToShow = -1,
-                           f32 length = 0.8f,
-                           f32 threshold = 0.01f) {
+                           f32 length = 0.8f) {
   i32 flowWidth = flow[0].width();
   i32 flowHeight = flow[0].height();
   i32 ndirs = flow.size(0);
@@ -301,11 +302,7 @@ inline void WriteFlowToPDF(const std::string &filename,
   
   std::ofstream ofs(filename.c_str());
   PDFWriter pdf(ofs, flowWidth, flowHeight);
-  
-  //    pdf.setFillGrayLevel(0.0f);
-  //    pdf.drawRect(0, 0, flowSize, flowSize);
-  //    pdf.fill();
-  
+ 
   pdf.setLineCapStyle(1);
   pdf.setLineWidth(0.1f);
   pdf.translate(0.5f, 0.5f);
