@@ -1,69 +1,74 @@
-CLIP_STRINGIFY(
-kernel void grad2polar(global imval* xs,
-                       global imval* ys,
-                       global imval* mag,
-                       global imval* angle) {
-	int indx = get_global_index();
-  float x = load(imval, indx, xs);
-  float y = load(imval, indx, ys);
-  angle[indx] = atan2(x, -y);
-  mag[indx] = hypot(x, y);
+kernel void grad2polar(input_t xs,
+                       input_t ys,
+                       output_t mag,
+                       output_t angle) {
+	index_t indx = get_global_index();
+  calc_t x = load(indx, xs);
+  calc_t y = load(indx, ys);
+  store(atan2(x, -y), indx, angle);
+  store(hypot(x, y), indx, mag);
 }
 
-kernel void unitvec(global imval* angles,
-                    global imval* vs,
-                    global imval* us) {
-	int indx = get_global_index();
-  float angle = load(imval, indx, angles);
-  us[indx] = cos(angle);
-  vs[indx] = sin(angle);
+kernel void unitvec(input_t angles,
+                    output_t vs,
+                    output_t us) {
+	index_t indx = get_global_index();
+  calc_t angle = load(indx, angles);
+  store(cos(angle), indx, us);
+  store(sin(angle), indx, vs);
 }
 
-kernel void ktkn(global imval* us,
-                 global imval* vs,
-                 global imval* vxs,
-                 global imval* vys,
-                 global imval* kns,
-                 global imval* kts) {
-  int indx = get_global_index();
-  float u = load(imval, indx, us);
-  float v = load(imval, indx, vs);
-  float vx = load(imval, indx, vxs);
-  float vy = load(imval, indx, vys);
-  kts[indx] = (v*vy + u*vx)/u;
-  kns[indx] = (u*vy - v*vx)/u;
+kernel void ktkn(input_t us,
+                 input_t vs,
+                 input_t vxs,
+                 input_t vys,
+                 output_t kns,
+                 output_t kts) {
+  index_t indx = get_global_index();
+  calc_t u = load(indx, us);
+  calc_t v = load(indx, vs);
+  calc_t vx = load(indx, vxs);
+  calc_t vy = load(indx, vys);
+  store((v*vy + u*vx)/u, indx, kts);
+  store((u*vy - v*vx)/u, indx, kns);
 }
 
-kernel void rescale(global imval* input,
-                    float min, float max, float targ_min, float targ_max,
-                    int filter, global imval* output) {
-  int indx = get_global_index();
-  float inval = load(imval, indx, input);
-  float outval = targ_min + (inval - min)/(max - min)*(targ_max - targ_min);
-  if (filter) outval *= inval > min && inval < max;
-  store(imval, outval, indx, output);
+kernel void rescale(input_t input,
+                    float min, float max,
+                    float targ_min, float targ_max,
+                    int filter,
+                    output_t output) {
+  index_t indx = get_global_index();
+  calc_t inval = load(indx, input);
+  calc_t outval = targ_min + (inval - min)/(max - min)*(targ_max - targ_min);
+  if (filter) {
+    outval = iif(inval > (calc_t) min,
+                 iif(inval < (calc_t) max, outval, (calc_t) 0),
+                 (calc_t) 0);
+  }
+  store(outval, indx, output);
 }
 
-kernel void flowdiscr(global imval* confs,
-                      global imval* thetas,
+kernel void flowdiscr(input_t confs,
+                      input_t thetas,
                       float targ_theta, float theta_step, int npis,
-                      global imval* kts,
-                      global imval* kns,
+                      input_t kts,
+                      input_t kns,
                       float targ_kt, float targ_kn, float k_step,
-                      global imval* output) {
-  int indx = get_global_index();
+                      output_t output) {
+  index_t indx = get_global_index();
   
-  float conf = load(imval, indx, confs);
-  float theta = load(imval, indx, thetas);
-  float kt = load(imval, indx, thetas);
-  float kn = load(imval, indx, kns);
+  calc_t conf = load(indx, confs);
+  calc_t theta = load(indx, thetas);
+  calc_t kt = load(indx, thetas);
+  calc_t kn = load(indx, kns);
   
-  int test = theta < 0.f;
-  theta = test ? theta + npis*PI : theta;
+  bool_t test = theta < (calc_t) 0.f;
+  theta = iif(test, theta + npis*PI, theta);
   
   if (npis == 1) {
-    kt = test ? -kt : kt;
-    kn = test ? -kn : kn;
+    kt = iif(test, -kt, kt);
+    kn = iif(test, -kn, kn);
   }
   
   test = ((fabs(theta - targ_theta) < theta_step/2 ||
@@ -72,6 +77,5 @@ kernel void flowdiscr(global imval* confs,
           fabs(kt - targ_kt) < k_step/2 &&
           fabs(kn - targ_kn) < k_step/2);
   
-  store(imval, test ? conf : 0.f, indx, output);
+  store(iif(test, conf, (calc_t) 0.f), indx, output);
 }
-)

@@ -10,11 +10,11 @@
 namespace evp {
 using namespace clip;
 
-inline bool ReadJpeg(const std::string &filename, ImageData &data,
+inline void ReadJpeg(const std::string &filename, ImageData &data,
                      bool normalize = false) {
   FILE *infile;
   if ((infile = fopen(filename.c_str(), "rb")) == NULL)
-    return false;
+    throw std::runtime_error("Unable to open file " + filename);
   
   struct jpeg_decompress_struct dinfo;
   struct jpeg_error_mgr jerr;
@@ -57,8 +57,6 @@ inline bool ReadJpeg(const std::string &filename, ImageData &data,
     data.normalize();
   
   free(imdata);
-  
-  return true;
 }
 
 inline bool WriteJpeg(const std::string &filename, const ImageData &data,

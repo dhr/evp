@@ -41,7 +41,7 @@ inline void ReadImage(const std::string& filename, ImageData& data) {
   
   if (extension == "png") {
 #ifndef EVP_NO_PNG
-    ReadPng(filename, data);
+    return ReadPng(filename, data);
 #else
     throw std::runtime_error("Support for png images was compiled out");
 #endif

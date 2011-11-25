@@ -1,23 +1,20 @@
-CLIP_STRINGIFY(
-float contpart(float x, float degree);
-float smoothpart(float x, float degree);
+calc_t contpart(calc_t x, calc_t degree);
+calc_t smoothpart(calc_t x, calc_t degree);
 
-float contpart(float x, float degree) {
-	float invDeg = 1/degree;
+calc_t contpart(calc_t x, calc_t degree) {
+	calc_t invDeg = 1/degree;
   x += invDeg/2;
   
-  if (x <= 0) return 0;
-  if (x >= invDeg) return 1;
-  return degree*x;
+  return iif(x <= (calc_t) 0, (calc_t) 0,
+             iif(x >= invDeg, (calc_t) 1, degree*x));
 }
 
-float smoothpart(float x, float degree) {
+calc_t smoothpart(calc_t x, calc_t degree) {
 	x *= degree;
   
-  if (x <= -0.5) return 0;
-  if (x >= 0.5) return 1;
+  calc_t temp = exp(-1/(0.5f + x));
+  temp = temp/(temp + exp(-1/(0.5f - x)));
   
-  float temp = exp(-1/(0.5f + x));
-  return temp/(temp + exp(-1/(0.5f - x)));
+  return iif(x <= (calc_t) -0.5, (calc_t) 0,
+             iif(x >= (calc_t) 0.5, (calc_t) 1, temp));
 }
-)
