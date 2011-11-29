@@ -55,7 +55,7 @@ struct DiscretizeFlowOp : public BasicOp {
 };
 DiscretizeFlowOp DiscretizeFlow;
 
-class FlowInitOps : public Monitorable {
+class GradientFlowInitOps : public Monitorable {
   FlowInitOpParams &params_;
   GradientOp gradient_;
   GaussianBlurOp blurImage_;
@@ -63,7 +63,7 @@ class FlowInitOps : public Monitorable {
   GaussianBlurOp blurVGrad_;
   
  public:
-  FlowInitOps(FlowInitOpParams &params)
+  GradientFlowInitOps(FlowInitOpParams &params)
   : params_(params),
     blurImage_(params.blurImageSigma),
     blurUV_(params.blurUVSigma),

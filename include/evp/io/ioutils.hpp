@@ -32,11 +32,35 @@ inline void SlurpFile(const std::string& filename,
   ifs.read(&(*str)[0], fileSize);
 }
 
+inline void TextualProgressMonitor(f32 progress, i32 total = 35) {
+  static f32 last = 0;
+  i32 tot = 35;
+
+  if (last == 0) {
+    for (i32 i = 0; i < tot; ++i)
+      std::cout << "_";
+    std::cout << "\n";
+  }
+
+  i32 n = i32(progress*tot) - i32(last*tot);
+  for (i32 i = 0; i < n; ++i)
+    std::cout << '^';
+
+  if (progress == 1) {
+    last = 0;
+    std::cout << "\n";
+  }
+  else
+    last = progress;
+
+  std::cout.flush();
+}
+
 inline void WriteLLColumnsToPDF(const std::string& filename,
                                 const CurveData& cols,
                                 f32 threshold = 0.01f,
-                                f32 length = 1.2,
-                                f32 darken = 0.3f) {
+                                f32 darken = 0.3f,
+                                f32 length = 1.2) {
   i32 width = cols(0, 0).width();
   i32 height = cols(0, 0).height();
   

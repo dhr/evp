@@ -102,9 +102,8 @@ class FlowSupportOp {
       }
     }}}}}
     
-    for (i32 i = 0; i < kernels_.numElems(); ++i) {
+    for (i32 i = 0; i < kernels_.numElems(); ++i)
       kernels_[i].data() /= maxExcitation;
-    }
   }
   
   FlowSupportOp(f64 ti, f64 kti, f64 kni, RelaxFlowOpParams &params)

@@ -28,10 +28,10 @@ struct FlowInitOpParams {
     curvatureStep(0.1),
     estimateCurvatures(false),
     blurImageSigma(2.f),
-    blurUVSigma(1.f),
-    blurVGradSigma(1.f),
+    blurUVSigma(0.f),
+    blurVGradSigma(0.f),
     thetaThreshold(0.0),
-    minConf(0.8),
+    minConf(0.8f),
     orientationStep(M_PI/nt),
     numPis(1),
     numCurvClasses(nk/2 + 1) {}

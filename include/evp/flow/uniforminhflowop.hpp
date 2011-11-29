@@ -38,7 +38,7 @@ class UniformInhibitionFlowSupportOp : public FlowSupportOp {
     
     f64 dt = params_.orientationStep;
     
-    f64 falloffSigma = M_PI/8.;
+    f64 falloffSigma = 1.f/4.f*M_PI/params_.numOrientations;
     
     f32 totalInhibition = 0.f;
     

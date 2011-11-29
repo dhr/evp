@@ -38,19 +38,21 @@ inline ImageData MakeGabor(f64 theta,
                            f64 phase,
                            f64 sigma,
                            f64 aspect,
+                           f64 xoff = 0,
+                           f64 yoff = 0,
                            i32 kwidth = 0,
                            i32 kheight = 0) {
   f64 sinTheta = sin(theta);
   f64 cosTheta = cos(theta);
   
-  if (kwidth == 0) {
+  if (kwidth <= 0) {
     kwidth = unsigned(floor(std::max(fabs(6*sigma*cosTheta),
                                      fabs(6*sigma/aspect*sinTheta))));
   }
   
   if (kwidth%2 == 0) kwidth++;
   
-  if (kheight == 0) {
+  if (kheight <= 0) {
     kheight = unsigned(floor(std::max(fabs(6*sigma/aspect*cosTheta),
                                       fabs(6*sigma*sinTheta))));
   }
@@ -66,8 +68,8 @@ inline ImageData MakeGabor(f64 theta,
   for (i32 yi = 0; yi < kheight; ++y, ++yi) {
     i32 x = -halfWidth;
     for (i32 xi = 0; xi < kwidth; ++x, ++xi) {
-      f64 xp = cosTheta*x + sinTheta*y;
-      f64 yp = cosTheta*y - sinTheta*x;
+      f64 xp = cosTheta*x + sinTheta*y + xoff;
+      f64 yp = cosTheta*y - sinTheta*x + yoff;
       kernel(xi, yi) = Gabor(xp, yp, wavelength, phase, sigma, aspect);
     }
   }

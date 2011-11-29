@@ -47,10 +47,11 @@ class JitteredFlowInitOps : public Monitorable {
   
  public:
   JitteredFlowInitOps(FlowInitOpParams& params,
-                      i32 numOrientationJitters = 5,
-                      i32 numScaleJitters = 5,
-                      i32 numOffsets = 5,
-                      i32 baseScale = 2)
+                      i32 numOrientationJitters = 3,
+                      i32 numScaleJitters = 1,
+                      i32 numPosJitters = 1,
+                      i32 numOffsets = 1,
+                      i32 baseScale = 3)
   : params_(params),
     filters_(params.numOrientations, numOrientationJitters,
              numScaleJitters, numOffsets),
@@ -58,9 +59,9 @@ class JitteredFlowInitOps : public Monitorable {
     numScaleJitters_(numScaleJitters),
     numOffsets_(numOffsets)
   {
-    f64 baseWavelength = 2*baseScale;
-    f64 baseSigma = 2.1*baseScale;
-    f64 a = 1.2;
+    f64 baseWavelength = 3*baseScale;
+    f64 baseSigma = baseScale;
+    f64 a = 1.5;
     
     for (i32 ti = 0; ti < params_.numOrientations; ++ti) {
       for (i32 jti = 0; jti < numOrientationJitters_; ++jti) {
@@ -72,7 +73,7 @@ class JitteredFlowInitOps : public Monitorable {
           f64 s = baseSigma;//*(1 << jsi);
           
           for (i32 jpi = 0; jpi < numOffsets_; ++jpi) {
-            f64 p = jpi*(M_PI/2)/(numOffsets_ - 1);
+            f64 p = jpi*(M_PI/2)/(std::max(numOffsets_ - 1, 1));
             
             filters_(ti, jti, jsi, jpi) = MakeGabor(t, w, p, s, a);
           }
@@ -111,11 +112,11 @@ class JitteredFlowInitOps : public Monitorable {
         InputIteratorAdaptor<ImBufList::reverse_iterator> iia1(stack.rbegin());
         Map(HalfRectify, n, iia1);
         
-        ImageBuffer avg = Merge(Add, n, popper);
+        ImageBuffer avg = Merge(Max, n, popper);
         avg /= n/2.f;
         
         pusher.output(avg);
-        setProgress(0.9f*f32(ti*numOrientationJitters_ + jti + 1)/
+        setProgress(f32(ti*numOrientationJitters_ + jti + 1)/
                     params_.numOrientations/
                     numOrientationJitters_);
       }
@@ -139,8 +140,6 @@ class JitteredFlowInitOps : public Monitorable {
           output[target] = temp.clone();
         }
       }
-      
-      setProgress(0.9f + 0.1f*(1.f - f32(ti)/params_.numOrientations));
     }
     
     return outputPtr;

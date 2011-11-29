@@ -12,7 +12,7 @@
 #include "evp/curve/relaxcurveopparams.hpp"
 #include "evp/curve/suppresslineedgesop.hpp"
 #include "evp/flow/flowbufferops.hpp"
-#include "evp/flow/flowinitops.hpp"
+#include "evp/flow/gradientflowinitops.hpp"
 #include "evp/flow/flowinitopparams.hpp"
 #include "evp/flow/jitteredflowinitops.hpp"
 #include "evp/flow/llflowinitops.hpp"

@@ -9,7 +9,7 @@ class FlowSupportOp;
 struct RelaxFlowOpParams;
 
 FlowSupportOp *
-CreateInhibitionlessFlowSupportOp(f64, f64, f64, RelaxFlowOpParams &);
+CreateInhibitionlessFlowSupportOp(f64, f64, f64, RelaxFlowOpParams&);
 
 FlowSupportOp *
 CreateUniformInhibitionFlowSupportOp(f64, f64, f64,
@@ -45,9 +45,9 @@ struct RelaxFlowOpParams {
     orientationStep(M_PI/nt),
     numPis(1),
     numCurvClasses(nk/2 + 1),
-    minSupport(0.005), 
+    minSupport(0.01), 
     maxSupport(1),
-    inhRatio(2) {}
+    inhRatio(4) {}
 };
 
 }
