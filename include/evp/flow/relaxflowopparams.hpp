@@ -32,6 +32,7 @@ struct RelaxFlowOpParams {
   i32 numCurvClasses;
   f32 minSupport;
   f32 maxSupport;
+  f32 normFactor;
   f32 inhRatio;
   
   RelaxFlowOpParams(i32 nt = 8, i32 nk = 5)
@@ -45,8 +46,9 @@ struct RelaxFlowOpParams {
     orientationStep(M_PI/nt),
     numPis(1),
     numCurvClasses(nk/2 + 1),
-    minSupport(0.01), 
+    minSupport(0.125),
     maxSupport(1),
+    normFactor(0),
     inhRatio(4) {}
 };
 

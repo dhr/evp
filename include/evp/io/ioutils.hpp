@@ -240,9 +240,9 @@ inline void WriteFlowCompatToPDF(const std::string &filename,
   std::ofstream ofs(filename.c_str());
   PDFWriter pdf(ofs, flowWidth, flowHeight);
   
-  pdf.setFillGrayLevel(0.5f);
-  pdf.drawRect(0, 0, flowWidth, flowHeight);
-  pdf.fill();
+//  pdf.setFillGrayLevel(0.5f);
+//  pdf.drawRect(0, 0, flowWidth, flowHeight);
+//  pdf.fill();
   
   pdf.setLineCapStyle(1);
   pdf.setLineWidth(0.1f);
@@ -271,7 +271,7 @@ inline void WriteFlowCompatToPDF(const std::string &filename,
         f32 xoff = cos(theta)*length;
         f32 yoff = sin(theta)*length;
         
-        pdf.setStrokeGrayLevel(0.5 + val/maxVal/2);
+        pdf.setStrokeGrayLevel(0.5 - val/maxVal/2);
         pdf.drawLine(x - xoff, y - yoff, x + xoff, y + yoff);
         pdf.stroke();
       }

@@ -19,7 +19,7 @@ class LLOp {
  public:
   typedef ImageBuffer result_type;
   
-  static const i32 kMinLLArgs = 2;
+  static const i32 kMinLLArgs = 1;
   static const i32 kMaxLLArgs = 6;
   
   LLOp(std::string baseName) : caches_(kMaxLLArgs - kMinLLArgs + 1) {
@@ -225,6 +225,10 @@ LLMerge(LLOp op, i32 n, f32 degree, bool adapt, f32 scale,
   assert(n <= LLOp::kMaxLLArgs && "Too many arguments passed to LLMerge");
   
   switch (n) {
+    case 1:
+      input.next().copyInto(output);
+      return output;
+      
     case 2:
       return op(input.next(), input.next(),
                 degree, adapt, scale, output);

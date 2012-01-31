@@ -42,25 +42,18 @@ class JitteredFlowInitOps : public Monitorable {
   f64 power_;
   i32 numOrientationJitters_;
   i32 numScaleJitters_;
-  i32 numOffsets_;
   ImageBuffer maxBuf_;
   
  public:
   JitteredFlowInitOps(FlowInitOpParams& params,
-                      i32 numOrientationJitters = 3,
+                      i32 numOrientationJitters = 1,
                       i32 numScaleJitters = 1,
-                      i32 numPosJitters = 1,
-                      i32 numOffsets = 1,
-                      i32 baseScale = 3)
+                      f64 baseWavelength = 4)
   : params_(params),
-    filters_(params.numOrientations, numOrientationJitters,
-             numScaleJitters, numOffsets),
+    filters_(params.numOrientations, numOrientationJitters, numScaleJitters, 2),
     numOrientationJitters_(numOrientationJitters),
-    numScaleJitters_(numScaleJitters),
-    numOffsets_(numOffsets)
+    numScaleJitters_(numScaleJitters)
   {
-    f64 baseWavelength = 3*baseScale;
-    f64 baseSigma = baseScale;
     f64 a = 1.5;
     
     for (i32 ti = 0; ti < params_.numOrientations; ++ti) {
@@ -69,14 +62,11 @@ class JitteredFlowInitOps : public Monitorable {
         f64 t = (ti + toff)*params_.orientationStep;
         
         for (i32 jsi = 0; jsi < numScaleJitters_; ++jsi) {
-          f64 w = baseWavelength + jsi;//*(1 << jsi);
-          f64 s = baseSigma;//*(1 << jsi);
+          f64 w = std::pow(2.f, jsi/2.f)*baseWavelength;
+          f64 s = w;
           
-          for (i32 jpi = 0; jpi < numOffsets_; ++jpi) {
-            f64 p = jpi*(M_PI/2)/(std::max(numOffsets_ - 1, 1));
-            
-            filters_(ti, jti, jsi, jpi) = MakeGabor(t, w, p, s, a);
-          }
+          filters_(ti, jti, jsi, 0) = MakeGabor(t, w, 0, s, a);
+          filters_(ti, jti, jsi, 1) = MakeGabor(t, w, M_PI_2, s, a);
         }
       }
     }
@@ -96,29 +86,23 @@ class JitteredFlowInitOps : public Monitorable {
     PopAdaptor popper(stack);
     PushAdaptor pusher(stack);
 
+//    GaussianBlurOp blur(6.f);
+    ImageBuffer input = image; // blur(image);
+    
+    f32 mulNorm = 1.f/numScaleJitters_;
     for (i32 ti = 0; ti < params_.numOrientations; ti++) {
       for (i32 jti = 0; jti < numOrientationJitters_; jti++) {
         for (i32 jsi = 0; jsi < numScaleJitters_; jsi++) {
-          for (i32 jpi = 0; jpi < numOffsets_; jpi++) {
-            ImageData& filter = filters_(ti, jti, jsi, jpi);
-            ImageBuffer temp = Filter(image, filter);
-            pusher.output(temp);
-            pusher.output(Negate(temp));
-          }
+          ImageBuffer o1 = Filter(input, filters_(ti, jti, jsi, 0));
+          ImageBuffer o2 = Filter(input, filters_(ti, jti, jsi, 1));
+          ImageBuffer energy = Sqrt(o1*o1 + o2*o2);
+          pusher.output(energy);
         }
         
-        i32 n = 2*numScaleJitters_*numOffsets_;
+        pusher.output(Merge(Mul, numScaleJitters_, popper)^mulNorm);
         
-        InputIteratorAdaptor<ImBufList::reverse_iterator> iia1(stack.rbegin());
-        Map(HalfRectify, n, iia1);
-        
-        ImageBuffer avg = Merge(Max, n, popper);
-        avg /= n/2.f;
-        
-        pusher.output(avg);
         setProgress(f32(ti*numOrientationJitters_ + jti + 1)/
-                    params_.numOrientations/
-                    numOrientationJitters_);
+                    params_.numOrientations/numOrientationJitters_);
       }
     }
     
