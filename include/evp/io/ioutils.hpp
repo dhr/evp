@@ -36,22 +36,20 @@ inline void TextualProgressMonitor(f32 progress) {
   static f32 last = 0;
   i32 tot = 35;
 
-  if (last == 0) {
-    for (i32 i = 0; i < tot; ++i)
-      std::cout << "_";
-    std::cout << "\n";
-  }
-
-  i32 n = i32(progress*tot) - i32(last*tot);
-  for (i32 i = 0; i < n; ++i)
-    std::cout << '^';
+  i32 n = i32(progress*tot);
+  std::cout << "[";
+  for (i32 i = 0; i < tot; ++i)
+    std::cout << (i < n ? '=' : ' ');
+  std::cout << "] " << i32(progress*100 + 0.5) << "%";
 
   if (progress == 1) {
     last = 0;
     std::cout << "\n";
   }
-  else
+  else {
     last = progress;
+    std::cout << "\r";
+  }
 
   std::cout.flush();
 }
