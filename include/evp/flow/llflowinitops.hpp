@@ -1,12 +1,13 @@
 #ifndef EVP_FLOW_LLFLOWINITOPS_H
 #define EVP_FLOW_LLFLOWINITOPS_H
 
+#include "evp/flow/flowinitops.hpp"
 #include "evp/loglin/llgabor.hpp"
 
 namespace evp {
 using namespace clip;
   
-class LLFlowInitOps : public Monitorable {
+class LLFlowInitOps : public FlowInitOps {
   FlowInitOpParams params_;
   std::vector<LLGabor> llgabors_[4];
   

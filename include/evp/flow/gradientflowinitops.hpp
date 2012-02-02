@@ -1,10 +1,10 @@
 #pragma once
-#ifndef EVP_FLOW_FLOWINITOPS_H
-#define EVP_FLOW_FLOWINITOPS_H
+#ifndef EVP_FLOW_GRADIENTFLOWINITOPS_H
+#define EVP_FLOW_GRADIENTFLOWINITOPS_H
 
 #include <clip.hpp>
 
-#include "evp/flow/flowinitopparams.hpp"
+#include "evp/flow/flowinitops.hpp"
 #include "evp/flow/flowtypes.hpp"
 
 namespace evp {
@@ -55,7 +55,7 @@ struct DiscretizeFlowOp : public BasicOp {
 };
 DiscretizeFlowOp DiscretizeFlow;
 
-class GradientFlowInitOps : public Monitorable {
+class GradientFlowInitOps : public FlowInitOps {
   FlowInitOpParams &params_;
   GradientOp gradient_;
   GaussianBlurOp blurImage_;
@@ -65,9 +65,9 @@ class GradientFlowInitOps : public Monitorable {
  public:
   GradientFlowInitOps(FlowInitOpParams &params)
   : params_(params),
-    blurImage_(params.blurImageSigma),
-    blurUV_(params.blurUVSigma),
-    blurVGrad_(params.blurVGradSigma) {}
+    blurImage_(params.size),
+    blurUV_(params.size),
+    blurVGrad_(params.size) {}
   
   FlowBuffersPtr apply(const ImageBuffer& image) {
     FlowBuffersPtr outputPtr(new FlowBuffers(params_.numOrientations,
@@ -76,7 +76,7 @@ class GradientFlowInitOps : public Monitorable {
     FlowBuffers& output = *outputPtr;
     
     ImageBuffer gradX = ~image, gradY = ~image;
-    if (params_.blurImageSigma > 0)
+    if (params_.size > 0)
       gradient_(blurImage_(image), gradX, gradY);
     else
       gradient_(image, gradX, gradY);
@@ -85,7 +85,7 @@ class GradientFlowInitOps : public Monitorable {
     Grad2Polar(gradX, gradY, confs, thetas);
 
     confs /= MaxReduce(confs);
-    Rescale(confs, params_.thetaThreshold, 1.f,
+    Rescale(confs, params_.threshold, 1.f,
             params_.minConf, 1.f, true,
             confs);
     
@@ -96,7 +96,7 @@ class GradientFlowInitOps : public Monitorable {
       ImageBuffer us = ~image, vs = ~image;
       UnitVectorize(thetas, us, vs);
       
-      if (params_.blurUVSigma > 0) {
+      if (params_.size > 0) {
         blurUV_(us, us);
         blurUV_(vs, vs);
       }
@@ -104,7 +104,7 @@ class GradientFlowInitOps : public Monitorable {
       ImageBuffer vxs = ~image, vys = ~image;
       gradient_(vs, vxs, vys);
       
-      if (params_.blurVGradSigma > 0) {
+      if (params_.size > 0) {
         blurVGrad_(vxs, vxs);
         blurVGrad_(vys, vys);
       }

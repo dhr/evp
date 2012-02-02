@@ -6,6 +6,7 @@
 
 #include <clip.hpp>
 
+#include "evp/flow/flowinitops.hpp"
 #include "evp/flow/flowtypes.hpp"
 #include "evp/util/gabor.hpp"
 
@@ -36,7 +37,7 @@ void LocalNonMaximumSuppression(i32 n, i32 radius,
   }
 }
 
-class JitteredFlowInitOps : public Monitorable {
+class JitteredFlowInitOps : public FlowInitOps {
   FlowInitOpParams params_;
   NDArray<ImageData,4> filters_;
   f64 power_;
@@ -47,14 +48,14 @@ class JitteredFlowInitOps : public Monitorable {
  public:
   JitteredFlowInitOps(FlowInitOpParams& params,
                       i32 numOrientationJitters = 1,
-                      i32 numScaleJitters = 1,
-                      f64 baseWavelength = 4)
+                      i32 numScaleJitters = 1)
   : params_(params),
     filters_(params.numOrientations, numOrientationJitters, numScaleJitters, 2),
     numOrientationJitters_(numOrientationJitters),
     numScaleJitters_(numScaleJitters)
   {
     f64 a = 1.5;
+    f64 baseWavelength = params.size;
     
     for (i32 ti = 0; ti < params_.numOrientations; ++ti) {
       for (i32 jti = 0; jti < numOrientationJitters_; ++jti) {
@@ -112,7 +113,7 @@ class JitteredFlowInitOps : public Monitorable {
     
     for (i32 ti = params_.numOrientations - 1; ti >= 0; ti--) {
       ImageBuffer temp = Merge(Add, numOrientationJitters_, popper);
-      Bound(temp, temp);
+      Rescale(temp, params_.threshold, 1.f, params_.minConf, 1.f, true, temp);
       
       output(ti, 0, 0) = temp;
       

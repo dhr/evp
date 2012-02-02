@@ -9,12 +9,10 @@ struct FlowInitOpParams {
   i32 numOrientations;
   i32 numCurvatures;
   f32 curvatureStep;
-  bool estimateCurvatures;
-  f32 blurImageSigma;
-  f32 blurUVSigma;
-  f32 blurVGradSigma;
-  f32 thetaThreshold;
+  f32 size;
+  f32 threshold;
   f32 minConf;
+  bool estimateCurvatures;
   
   // Inferred parameters
   
@@ -26,12 +24,10 @@ struct FlowInitOpParams {
   : numOrientations(nt),
     numCurvatures(nk),
     curvatureStep(0.1),
+    size(2.f),
+    threshold(0.0),
+    minConf(0.7f),
     estimateCurvatures(false),
-    blurImageSigma(2.f),
-    blurUVSigma(0.f),
-    blurVGradSigma(0.f),
-    thetaThreshold(0.0),
-    minConf(0.8f),
     orientationStep(M_PI/nt),
     numPis(1),
     numCurvClasses(nk/2 + 1) {}

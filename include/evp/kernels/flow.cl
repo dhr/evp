@@ -60,7 +60,7 @@ kernel void flowdiscr(input_t confs,
   
   calc_t conf = load(indx, confs);
   calc_t theta = load(indx, thetas);
-  calc_t kt = load(indx, thetas);
+  calc_t kt = load(indx, kts);
   calc_t kn = load(indx, kns);
   
   bool_t test = theta < (calc_t) 0.f;

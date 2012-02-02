@@ -32,7 +32,7 @@ inline void SlurpFile(const std::string& filename,
   ifs.read(&(*str)[0], fileSize);
 }
 
-inline void TextualProgressMonitor(f32 progress, i32 total = 35) {
+inline void TextualProgressMonitor(f32 progress) {
   static f32 last = 0;
   i32 tot = 35;
 
