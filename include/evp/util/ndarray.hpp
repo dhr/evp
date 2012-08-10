@@ -16,7 +16,7 @@ using namespace clip;
 template<typename T, i32 N>
 class NDArray {
  public:
-  typedef i32 size_type;
+  typedef size_t size_type;
   typedef typename std::vector<T>::iterator iterator;
   
  private:
