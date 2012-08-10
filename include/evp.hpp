@@ -17,6 +17,7 @@
 #include "evp/flow/gradientflowinitops.hpp"
 #include "evp/flow/jitteredflowinitops.hpp"
 #include "evp/flow/llflowinitops.hpp"
+#include "evp/flow/pushpullinitops.hpp"
 #include "evp/flow/relaxflowop.hpp"
 #include "evp/flow/relaxflowopparams.hpp"
 #include "evp/flow/uniforminhflowop.hpp"
