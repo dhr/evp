@@ -17,7 +17,7 @@ kernel void lland2(input_t data1,
   
   calc_t cp1 = contpart(in1, degree);
   calc_t cp2 = contpart(in2, degree);
-  calc_t prod_plus_1 = cp1*cp2 + 1;
+  calc_t prod_plus_1 = cp1*cp2 + 1.f;
   calc_t result = in1*(prod_plus_1 - cp1) +
                   in2*(prod_plus_1 - cp2);
   store(scale*result, indx, output);
@@ -42,7 +42,7 @@ kernel void llor2(input_t data1,
   
   calc_t cp1 = contpart(-in1, degree);
   calc_t cp2 = contpart(-in2, degree);
-  calc_t prod_plus_1 = cp1*cp2 + 1;
+  calc_t prod_plus_1 = cp1*cp2 + 1.f;
   calc_t result = in1*(prod_plus_1 - cp1) +
                   in2*(prod_plus_1 - cp2);
   store(scale*result, indx, output);
@@ -71,7 +71,7 @@ kernel void lland3(input_t data1,
   calc_t cp1 = contpart(in1, degree);
   calc_t cp2 = contpart(in2, degree);
   calc_t cp3 = contpart(in3, degree);
-  calc_t prod_plus_1 = cp1*cp2*cp3 + 1;
+  calc_t prod_plus_1 = cp1*cp2*cp3 + 1.f;
   calc_t result = in1*(prod_plus_1 - cp1) +
                   in2*(prod_plus_1 - cp2) +
                   in3*(prod_plus_1 - cp3);
@@ -101,7 +101,7 @@ kernel void llor3(input_t data1,
   calc_t cp1 = contpart(-in1, degree);
   calc_t cp2 = contpart(-in2, degree);
   calc_t cp3 = contpart(-in3, degree);
-  calc_t prod_plus_1 = cp1*cp2*cp3 + 1;
+  calc_t prod_plus_1 = cp1*cp2*cp3 + 1.f;
   calc_t result = in1*(prod_plus_1 - cp1) +
                   in2*(prod_plus_1 - cp2) +
                   in3*(prod_plus_1 - cp3);
@@ -135,7 +135,7 @@ kernel void lland4(input_t data1,
   calc_t cp2 = contpart(in2, degree);
   calc_t cp3 = contpart(in3, degree);
   calc_t cp4 = contpart(in4, degree);
-  calc_t prod_plus_1 = cp1*cp2*cp3*cp4 + 1;
+  calc_t prod_plus_1 = cp1*cp2*cp3*cp4 + 1.f;
   calc_t result = in1*(prod_plus_1 - cp1) +
                   in2*(prod_plus_1 - cp2) +
                   in3*(prod_plus_1 - cp3) +
@@ -170,7 +170,7 @@ kernel void llor4(input_t data1,
   calc_t cp2 = contpart(-in2, degree);
   calc_t cp3 = contpart(-in3, degree);
   calc_t cp4 = contpart(-in4, degree);
-  calc_t prod_plus_1 = cp1*cp2*cp3*cp4 + 1;
+  calc_t prod_plus_1 = cp1*cp2*cp3*cp4 + 1.f;
   calc_t result = in1*(prod_plus_1 - cp1) +
                   in2*(prod_plus_1 - cp2) +
                   in3*(prod_plus_1 - cp3) +
@@ -209,7 +209,7 @@ kernel void lland5(input_t data1,
   calc_t cp3 = contpart(in3, degree);
   calc_t cp4 = contpart(in4, degree);
   calc_t cp5 = contpart(in5, degree);
-  calc_t prod_plus_1 = cp1*cp2*cp3*cp4*cp5 + 1;
+  calc_t prod_plus_1 = cp1*cp2*cp3*cp4*cp5 + 1.f;
   calc_t result = in1*(prod_plus_1 - cp1) +
                   in2*(prod_plus_1 - cp2) +
                   in3*(prod_plus_1 - cp3) +
@@ -249,7 +249,7 @@ kernel void llor5(input_t data1,
   calc_t cp3 = contpart(-in3, degree);
   calc_t cp4 = contpart(-in4, degree);
   calc_t cp5 = contpart(-in5, degree);
-  calc_t prod_plus_1 = cp1*cp2*cp3*cp4*cp5 + 1;
+  calc_t prod_plus_1 = cp1*cp2*cp3*cp4*cp5 + 1.f;
   calc_t result = in1*(prod_plus_1 - cp1) +
                   in2*(prod_plus_1 - cp2) +
                   in3*(prod_plus_1 - cp3) +
@@ -293,7 +293,7 @@ kernel void lland6(input_t data1,
   calc_t cp4 = contpart(in4, degree);
   calc_t cp5 = contpart(in5, degree);
   calc_t cp6 = contpart(in6, degree);
-  calc_t prod_plus_1 = cp1*cp2*cp3*cp4*cp5*cp6 + 1;
+  calc_t prod_plus_1 = cp1*cp2*cp3*cp4*cp5*cp6 + 1.f;
   calc_t result = in1*(prod_plus_1 - cp1) +
                   in2*(prod_plus_1 - cp2) +
                   in3*(prod_plus_1 - cp3) +
@@ -338,7 +338,7 @@ kernel void llor6(input_t data1,
   calc_t cp4 = contpart(-in4, degree);
   calc_t cp5 = contpart(-in5, degree);
   calc_t cp6 = contpart(-in6, degree);
-  calc_t prod_plus_1 = cp1*cp2*cp3*cp4*cp5*cp6 + 1;
+  calc_t prod_plus_1 = cp1*cp2*cp3*cp4*cp5*cp6 + 1.f;
   calc_t result = in1*(prod_plus_1 - cp1) +
                   in2*(prod_plus_1 - cp2) +
                   in3*(prod_plus_1 - cp3) +

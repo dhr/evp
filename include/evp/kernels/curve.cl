@@ -5,7 +5,7 @@ kernel void stabilize(input_t input1,
   index_t indx = get_global_index();
   calc_t inval = load(indx, input1);
   calc_t slice_sum_val = load(indx, slice_sum);
-  store(inval + stab_amt*(fabs(inval) - slice_sum_val/n), indx, output);
+  store(inval + stab_amt*(fabs(inval) - slice_sum_val/(float)n), indx, output);
 }
 
 kernel void surround2(input_t data1,
@@ -18,16 +18,16 @@ kernel void surround2(input_t data1,
   calc_t in2 = load(indx, data2);
   
   calc_t maxval = fmax(fabs(in1), fabs(in2));
-  maxval = iif(maxval == 0, 1, maxval);
+  maxval = iif(maxval == 0.f, 1.f, maxval);
   
   calc_t part = smoothpart(in1, degree/maxval);
   calc_t pos = part;
-  calc_t neg = 1 - part;
-  calc_t ambig = 2*pos*neg;
+  calc_t neg = 1.f - part;
+  calc_t ambig = 2.f*pos*neg;
   
   part = smoothpart(in2, degree/maxval);
   pos *= part;
-  neg *= (1 - part);
+  neg *= (1.f - part);
   
   store(in1 + in2*(pos + neg + ambig), indx, output);
 }

@@ -42,9 +42,7 @@ kernel void rescale(input_t input,
   calc_t inval = load(indx, input);
   calc_t outval = targ_min + (inval - min)/(max - min)*(targ_max - targ_min);
   if (filter) {
-    outval = iif(inval > (calc_t) min,
-                 iif(inval < (calc_t) max, outval, (calc_t) 0),
-                 (calc_t) 0);
+    outval = iif(inval > min, iif(inval < max, outval, 0.f), 0.f);
   }
   store(outval, indx, output);
 }
@@ -63,7 +61,7 @@ kernel void flowdiscr(input_t confs,
   calc_t kt = load(indx, kts);
   calc_t kn = load(indx, kns);
   
-  bool_t test = theta < (calc_t) 0.f;
+  bool_t test = theta < 0.f;
   theta = iif(test, theta + npis*PI, theta);
   
   if (npis == 1) {
@@ -77,5 +75,5 @@ kernel void flowdiscr(input_t confs,
           fabs(kt - targ_kt) < k_step/2 &&
           fabs(kn - targ_kn) < k_step/2);
   
-  store(iif(test, conf, (calc_t) 0.f), indx, output);
+  store(iif(test, conf, 0.f), indx, output);
 }
