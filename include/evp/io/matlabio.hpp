@@ -55,34 +55,32 @@ inline bool WriteMatlabArray(const std::string& fileName,
 }
 
 template<i32 N>
-inline bool ReadMatlabArray(const std::string& fileName,
-                            NDArray<ImageData,N>& data) {
+std::tr1::shared_ptr<NDArray<ImageData,N> >
+ReadMatlabArray(const std::string& fileName) {
+  std::tr1::shared_ptr<NDArray<ImageData,N> > output;
+  
   mat_t* matfp = Mat_Open(fileName.c_str(), MAT_ACC_RDONLY);
   if (!matfp) {
     std::cerr << "Error reading MAT file " << fileName << std::endl;
-    return false;
+    return output;
   }
-  
-  bool success = true;
   
   matvar_t* matvar = Mat_VarRead(matfp, "evpdata");
   if (!matvar) {
-    success = false;
     std::cerr << "Couldn't find the 'evpdata' variable" << std::endl;
   }
   else {
     if (matvar->class_type != MAT_C_SINGLE) {
-      success = false;
       std::cerr << "The 'evpdata' variable isn't type 'single'" << std::endl;
     }
     else if (matvar->rank != N + 2) {
-      success = false;
       std::cerr << "The 'evpdata' variable has rank " << matvar->rank
                 << ", expected " << N + 2 << std::endl;
     }
-      
-    if (success) {
-      data = NDArray<ImageData,N>(matvar->dims + 2);
+    else {
+      output =
+        std::tr1::shared_ptr<NDArray<ImageData,N> >
+          (new NDArray<ImageData,N>(matvar->dims + 2));
       f32* vardata = static_cast<f32*>(matvar->data);
       i32 w = matvar->dims[0], h = matvar->dims[1];
       i32 n = w*h;
@@ -92,8 +90,8 @@ inline bool ReadMatlabArray(const std::string& fileName,
         nImages *= matvar->dims[i + 2];
       
       for (i32 i = 0; i < nImages; ++i) {
-        data[i] = ImageData(w, h);
-        memcpy(&data[i][0], vardata + i*n, n*sizeof(float));
+        (*output)[i] = ImageData(w, h);
+        memcpy(&(*output)[i][0], vardata + i*n, n*sizeof(float));
       }
     }
     
@@ -102,7 +100,7 @@ inline bool ReadMatlabArray(const std::string& fileName,
   
   Mat_Close(matfp);
   
-  return success;
+  return output;
 }
 #else
 namespace detail {
