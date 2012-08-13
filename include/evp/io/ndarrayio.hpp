@@ -12,13 +12,9 @@ using namespace clip;
 
 template<i32 N>
 std::tr1::shared_ptr< NDArray<ImageData,N> >
-ReadImageDataFromBufferArray(const NDArray<ImageBuffer,N>& buffers) {
-  std::vector<typename NDArray<ImageBuffer,N>::size_type> sizes(N);
-  for (i32 i = 0; i < N; ++i)
-    sizes[i] = buffers.size(i);
-  
+BufferArrayToDataArray(const NDArray<ImageBuffer,N>& buffers) {
   std::tr1::shared_ptr< NDArray<ImageData,N> > dataPtr
-    (new NDArray<ImageData,N>(&sizes[0]));
+    (new NDArray<ImageData,N>(buffers.sizes()));
   NDArray<ImageData,N>& data = *dataPtr;
   
   i32 numElems = buffers.numElems();
@@ -29,20 +25,16 @@ ReadImageDataFromBufferArray(const NDArray<ImageBuffer,N>& buffers) {
 }
 
 template<i32 N>
-inline void WriteImageDataToBufferArray(const NDArray<ImageData,N>& data,
-                                        NDArray<ImageBuffer,N>& buffers) {
+std::tr1::shared_ptr< NDArray<ImageBuffer,N> >
+DataArrayToBufferArray(const NDArray<ImageData,N>& data) {
   i32 numElems = data.numElems();
-  
-  if (buffers.numElems() != numElems) {
-    std::vector<typename NDArray<ImageBuffer,N>::size_type> sizes(N);
-    for (i32 i = 0; i < N; ++i)
-      sizes[i] = data.size(i);
-    
-    buffers = NDArray<ImageBuffer,N>(&sizes[0]);
-  }
+  std::tr1::shared_ptr< NDArray<ImageBuffer,N> > outputPtr
+    (new NDArray<ImageBuffer,N>(data.sizes()));
+  NDArray<ImageBuffer,N>& buffers = *outputPtr;
   
   for (i32 i = 0; i < numElems; ++i)
     buffers[i] = ImageBuffer(data[i]);
+  return outputPtr;
 }
 
 }

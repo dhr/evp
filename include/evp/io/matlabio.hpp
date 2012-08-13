@@ -73,21 +73,25 @@ ReadMatlabArray(const std::string& fileName) {
     if (matvar->class_type != MAT_C_SINGLE) {
       std::cerr << "The 'evpdata' variable isn't type 'single'" << std::endl;
     }
-    else if (matvar->rank != N + 2) {
+    else if (matvar->rank > N + 2 || matvar->rank <= 2) {
       std::cerr << "The 'evpdata' variable has rank " << matvar->rank
-                << ", expected " << N + 2 << std::endl;
+      << ", expected " << N + 2 << std::endl;
     }
     else {
+      std::vector<typename NDArray<ImageData,N>::size_type> sizes(N);
+      for (i32 i = 0; i < N; ++i)
+        sizes[i] = i + 2 < matvar->rank ? matvar->dims[i + 2] : 1;
+      
       output =
         std::tr1::shared_ptr<NDArray<ImageData,N> >
-          (new NDArray<ImageData,N>(matvar->dims + 2));
+          (new NDArray<ImageData,N>(&sizes[0]));
       f32* vardata = static_cast<f32*>(matvar->data);
       i32 w = matvar->dims[0], h = matvar->dims[1];
       i32 n = w*h;
       
       i32 nImages = 1;
-      for (i32 i = 0; i < N; ++i)
-        nImages *= matvar->dims[i + 2];
+      for (i32 i = 2; i < matvar->rank; ++i)
+        nImages *= matvar->dims[i];
       
       for (i32 i = 0; i < nImages; ++i) {
         (*output)[i] = ImageData(w, h);
@@ -132,8 +136,8 @@ namespace detail {
 }
 
 template<i32 N>
-inline bool WriteMatlabArray(const std::string& fileName,
-                             const NDArray<ImageData,N>& data) {
+bool WriteMatlabArray(const std::string& fileName,
+                      const NDArray<ImageData,N>& data) {
   const i32* sizes = data.sizes();
   i32 nImages = data.numElems();
   i32 width = data[0].width();
