@@ -67,7 +67,7 @@ class RelaxFlowOp : public Monitorable {
           for (i32 knii = 0; knii < nk; knii++) {
             index[2] = knii;
             
-            ImageBuffer support = ops_(tii%nt, ktii, knii)->apply(relaxSrc);
+            ImageBuffer support = ops_(tii, ktii, knii)->apply(relaxSrc);
             MulAdd(relaxSrc[index], support, relaxStep, support);
             (*temp)[index] = Bound(support, support);
           }
