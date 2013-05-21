@@ -40,7 +40,6 @@ void LocalNonMaximumSuppression(i32 n, i32 radius,
 class JitteredFlowInitOps : public FlowInitOps {
   FlowInitOpParams params_;
   NDArray<ImageData,4> filters_;
-  f64 power_;
   i32 numOrientationJitters_;
   i32 numScaleJitters_;
   ImageBuffer maxBuf_;

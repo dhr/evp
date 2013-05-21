@@ -17,7 +17,6 @@ class PushPullInitOps : public FlowInitOps {
   FlowInitOpParams params_;
   ImageData dogFilter_;
   NDArray<SparseImageData,5> filters_;
-  f64 power_;
   i32 numOrientationJitters_;
   i32 numScaleJitters_;
   ImageBuffer maxBuf_;
